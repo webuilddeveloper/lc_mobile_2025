@@ -1,6 +1,6 @@
 {
-    "name": "election_mobile_2025",
-    "short_name": "election_mobile_2025",
+    "name": "lc",
+    "short_name": "lc",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

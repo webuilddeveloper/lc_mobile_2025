@@ -1,4 +1,4 @@
-package com.example.election_mobile_2025
+package td.webuild.lc
 
 import io.flutter.embedding.android.FlutterActivity
 
