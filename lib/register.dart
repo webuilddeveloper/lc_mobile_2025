@@ -1144,15 +1144,6 @@ class _RegisterPageState extends State<RegisterPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         for (var item in _dataPolicy)
-          // Html(
-          //   data: item['description'].toString(),
-          //   onLinkTap: (String? url, RenderContext context,
-          //       Map<String, String> attributes, element) {
-          //     if (url != null) {
-          //       launch(url);
-          //     }
-          //   },
-          // ),
           Html(
             data: item['description'],
             onLinkTap: (String? url, Map<String, String> attributes, element) {

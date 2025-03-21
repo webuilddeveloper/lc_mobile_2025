@@ -11,10 +11,13 @@ header(
   bool isShowButtonPoi = false,
   bool isButtonPoi = false,
   Function? callBackClickButtonCalendar,
+  bool? isButtonRight,
+  Future<void> Function()? rightButton,
+  String? menu,
 }) {
   return AppBar(
     flexibleSpace: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
@@ -27,15 +30,11 @@ header(
     ),
     leading: InkWell(
       onTap: () => functionGoBack(),
-      child: Container(
-        // height: height * 7 / 100, // Your Height
-        // width: width * 12 / 100, // Your width
-        child: Image.asset(
-          "assets/images/back_arrow.png",
-          color: Colors.white,
-          width: 40,
-          height: 40,
-        ),
+      child: Image.asset(
+        "assets/images/back_arrow.png",
+        color: Colors.white,
+        width: 40,
+        height: 40,
       ),
     ),
     // backgroundColor: Color(0xFF9A1120),
@@ -43,7 +42,7 @@ header(
     title: isCenter
         ? Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               fontFamily: 'Kanit',
@@ -62,12 +61,12 @@ header(
               //   height: 50,
               // ),
               Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: 10,
                 ),
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Kanit',
                   ),
                 ),
@@ -82,13 +81,13 @@ header(
           },
           child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(10.0),
-            margin: EdgeInsets.only(right: 10, top: 12, bottom: 12),
+            padding: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.only(right: 10, top: 12, bottom: 12),
             width: 70,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(5)),
             child: isButtonCalendar
-                ? Row(
+                ? const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -112,9 +111,9 @@ header(
                     children: [
                       Image.asset(
                         'assets/icon_header_calendar_1.png',
-                        color: Color(0xFF2D9CED),
+                        color: const Color(0xFF2D9CED),
                       ),
-                      Text(
+                      const Text(
                         'ปฏิทิน',
                         style: TextStyle(
                           fontSize: 9,
@@ -130,8 +129,8 @@ header(
       if (isShowButtonPoi)
         Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(right: 10.0),
-          margin: EdgeInsets.only(right: 10, top: 12, bottom: 12),
+          padding: const EdgeInsets.only(right: 10.0),
+          margin: const EdgeInsets.only(right: 10, top: 12, bottom: 12),
           width: 70,
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(5)),
@@ -140,7 +139,7 @@ header(
               callBackClickButtonCalendar!();
             },
             child: isButtonPoi
-                ? Row(
+                ? const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -158,7 +157,7 @@ header(
                       ),
                     ],
                   )
-                : Row(
+                : const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

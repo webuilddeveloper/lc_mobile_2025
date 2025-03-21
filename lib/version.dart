@@ -96,21 +96,9 @@ class _VersionPageState extends State<VersionPage> {
   }
 
   _callGoSplash() {
-    // print('go splash');
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // Add Your Code here.
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder: (context) => SplashPage(),
-    //     ),
-    //   );
-    // });
-
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      // add your code here.
       Navigator.push(
-          context, new MaterialPageRoute(builder: (context) => SplashPage()));
+          context, MaterialPageRoute(builder: (context) => const SplashPage()));
     });
   }
 }

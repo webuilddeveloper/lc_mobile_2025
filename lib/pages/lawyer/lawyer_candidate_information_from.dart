@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lc/pages/blank_page/blank_loading.dart';
@@ -6,25 +8,26 @@ import 'package:lc/shared/api_provider.dart';
 
 class LawyerCandidateInformationFrom extends StatefulWidget {
   LawyerCandidateInformationFrom({
-    Key key,
-    this.code,
-  }) : super(key: key);
+    super.key,
+    required this.code,
+  });
 
   final String code;
-  final storage = new FlutterSecureStorage();
+  final storage = FlutterSecureStorage();
 
   @override
+  // ignore: library_private_types_in_public_api
   _LawyerCandidateInformationFrom createState() =>
       _LawyerCandidateInformationFrom();
 }
 
 class _LawyerCandidateInformationFrom
     extends State<LawyerCandidateInformationFrom> {
-  String keySearch;
-  String category;
-  Future<dynamic> futureModel;
-  ScrollController scrollController = new ScrollController();
-  ScrollController scrollController2 = new ScrollController();
+  late String keySearch;
+  late String category;
+  late Future<dynamic> futureModel;
+  ScrollController scrollController = ScrollController();
+  ScrollController scrollController2 = ScrollController();
 
   @override
   void dispose() {
@@ -253,7 +256,7 @@ class _LawyerCandidateInformationFrom
         ),
         SizedBox(height: 5),
         LawyerCandidateInformationFromVertical(
-          model: model,
+          model: model, title: '',
         ),
       ],
     );
@@ -333,7 +336,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         moo != ''
             ? Text(
-                ' หมู่ที่ ${moo}',
+                ' หมู่ที่ $moo',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',
@@ -343,7 +346,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         soi != ''
             ? Text(
-                ' ซอย ${soi}',
+                ' ซอย $soi',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',
@@ -353,7 +356,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         road != ''
             ? Text(
-                ' ถนน ${road}',
+                ' ถนน $road',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',
@@ -363,7 +366,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         tambonCode != ''
             ? Text(
-                ' ตำบล ${tambonCode}',
+                ' ตำบล $tambonCode',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',
@@ -373,7 +376,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         amphoeCode != ''
             ? Text(
-                ' อำเภอ ${amphoeCode}',
+                ' อำเภอ $amphoeCode',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',
@@ -383,7 +386,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         provinceCode != ''
             ? Text(
-                ' จังหวัด ${provinceCode}',
+                ' จังหวัด $provinceCode',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',
@@ -393,7 +396,7 @@ class _LawyerCandidateInformationFrom
             : Container(),
         postnoCode != ''
             ? Text(
-                ' ${postnoCode}',
+                ' $postnoCode',
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Kanit',

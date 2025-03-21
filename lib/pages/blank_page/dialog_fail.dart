@@ -46,7 +46,7 @@ dialogFail(
               reloadApp
                   ? Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => SplashPage(),
+                        builder: (context) => const SplashPage(),
                       ),
                       (Route<dynamic> route) => false,
                     )

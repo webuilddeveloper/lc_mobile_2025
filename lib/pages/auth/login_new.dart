@@ -263,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
                   textFieldLogin(
                     model: txtUsername,
                     hintText: 'ชื่อผู้ใช้งาน',
-                    labelText: 'ชื่อผู้ใช้งาน',
+                    labelText: 'ชื่อผู้ใช้งาน', 
                   ),
                   SizedBox(height: 15.0),
                   textFieldLogin(
@@ -489,42 +489,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _buildDialog(String param) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(
-          param,
-          style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Kanit',
-            color: Colors.black,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-        content: Text(" "),
-        actions: [
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: Text(
-              "ตกลง",
-              style: TextStyle(
-                fontSize: 13,
-                fontFamily: 'Kanit',
-                color: Color(0xFF000070),
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   //login username / password
   Future<dynamic> login() async {
     if ((_username == null || _username == '') && _category == 'guest') {
@@ -623,6 +587,7 @@ class _LoginPageState extends State<LoginPage> {
       print('----- response ----- ${response.toString()}');
 
       if (response.data['status'] == 'S') {
+        // ignore: use_build_context_synchronously
         FocusScope.of(context).unfocus();
         TextEditingController().clear();
         createStorageApp(
@@ -630,12 +595,12 @@ class _LoginPageState extends State<LoginPage> {
           category: 'guest',
         );
 
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => MenuV3(),
-        //   ),
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MenuV3(),
+          ),
+        );
       } else {
         showDialog(
           barrierDismissible: false,
@@ -704,12 +669,12 @@ class _LoginPageState extends State<LoginPage> {
         value: jsonEncode(result.objectData),
       );
 
-      // Navigator.of(context).pushAndRemoveUntil(
-      //   MaterialPageRoute(
-      //     builder: (context) => MenuV3(),
-      //   ),
-      //   (Route<dynamic> route) => false,
-      // );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => MenuV3(),
+        ),
+        (Route<dynamic> route) => false,
+      );
     } else {
       return showDialog(
         barrierDismissible: false,
@@ -820,14 +785,14 @@ class _LoginPageState extends State<LoginPage> {
               category: 'facebook',
             );
 
-            // if (accessToken != null) {
-            //   Navigator.pushReplacement(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => MenuV3(),
-            //     ),
-            //   );
-            // }
+            if (accessToken != null) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MenuV3(),
+                ),
+              );
+            }
           });
 
           // setState(() => _loadingSubmit = false);
@@ -876,12 +841,12 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (obj != null) {
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => MenuV3(),
-        //   ),
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MenuV3(),
+          ),
+        );
       }
     }
   }
@@ -959,12 +924,12 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (obj != null) {
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => MenuV3(),
-        //   ),
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MenuV3(),
+          ),
+        );
       }
     }
   }

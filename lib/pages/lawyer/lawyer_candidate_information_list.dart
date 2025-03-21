@@ -7,11 +7,12 @@ import 'package:lc/shared/api_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LawyerCandidateInformationList extends StatefulWidget {
-  LawyerCandidateInformationList({
-    Key key,
-  }) : super(key: key);
+  const LawyerCandidateInformationList({
+    super.key,
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _LawyerCandidateInformationList createState() =>
       _LawyerCandidateInformationList();
 }
@@ -20,11 +21,11 @@ class _LawyerCandidateInformationList
     extends State<LawyerCandidateInformationList> {
   int _limit2 = 12;
   String selectedType = '0';
-  Future<dynamic> futureModel;
-  Future<dynamic> futureModel2;
+  late Future<dynamic> futureModel;
+  late Future<dynamic> futureModel2;
 
-  final storage = new FlutterSecureStorage();
-  RefreshController _refreshController2 =
+  final storage = const FlutterSecureStorage();
+  final RefreshController _refreshController2 =
       RefreshController(initialRefresh: false);
 
   @override
@@ -76,7 +77,7 @@ class _LawyerCandidateInformationList
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xFFF7F7F7),
+        backgroundColor: const Color(0xFFF7F7F7),
         body: Column(
           children: [
             InkWell(
@@ -95,8 +96,8 @@ class _LawyerCandidateInformationList
                       'assets/logo/icons/backLeft.png',
                       height: 25,
                     ),
-                    SizedBox(width: 20),
-                    Text(
+                    const SizedBox(width: 20),
+                    const Text(
                       'ข้อมูลผู้สมัคร',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -112,7 +113,7 @@ class _LawyerCandidateInformationList
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +122,7 @@ class _LawyerCandidateInformationList
                     alignment: Alignment.center,
                     // padding: EdgeInsets.symmetric(vertical: 7),
                     decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
+                      color: const Color(0xFFFFFFFF),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
@@ -136,19 +137,19 @@ class _LawyerCandidateInformationList
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
                                 color: selectedType == '0'
-                                    ? Color(0xFF011895)
-                                    : Color(0xFFFFFFFF),
+                                    ? const Color(0xFF011895)
+                                    : const Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Text(
                                 'ผู้สมัครนายก',
                                 style: TextStyle(
                                   color: selectedType == '0'
-                                      ? Color(0xFFFFFFFF)
-                                      : Color(0x80707070),
+                                      ? const Color(0xFFFFFFFF)
+                                      : const Color(0x80707070),
                                   fontFamily: 'Kanit',
                                   fontSize: 20,
                                   fontWeight: selectedType == '0'
@@ -169,19 +170,19 @@ class _LawyerCandidateInformationList
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
                                 color: selectedType == '1'
-                                    ? Color(0xFF011895)
-                                    : Color(0xFFFFFFFF),
+                                    ? const Color(0xFF011895)
+                                    : const Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Text(
                                 'ผู้สมัครกรรมการ',
                                 style: TextStyle(
                                   color: selectedType == '1'
-                                      ? Color(0xFFFFFFFF)
-                                      : Color(0x80707070),
+                                      ? const Color(0xFFFFFFFF)
+                                      : const Color(0x80707070),
                                   fontFamily: 'Kanit',
                                   fontSize: 20,
                                   fontWeight: selectedType == '1'
@@ -219,15 +220,15 @@ class _LawyerCandidateInformationList
           return ListView.builder(
               padding: EdgeInsets.zero,
               shrinkWrap: true, // use it
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 return myCardPrimeCandidate(snapshot.data[index], context);
               });
         } else if (snapshot.hasError) {
-          return BlankLoading();
+          return const BlankLoading();
         } else {
-          return BlankLoading();
+          return const BlankLoading();
         }
       },
     );
@@ -246,7 +247,7 @@ class _LawyerCandidateInformationList
         );
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(bottom: 20),
         child: Column(
           children: [
             ClipRRect(
@@ -258,23 +259,23 @@ class _LawyerCandidateInformationList
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     '${model['numberCandidate']}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30,
                       color: Color(0xFF2D9CED),
                       fontFamily: 'Kanit',
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text(
                     '${model['prefixName']} ${model['firstName']} ${model['lastName']}',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 20,
                         color: Color(0xFF000000),
                         fontFamily: 'Kanit',
@@ -299,7 +300,7 @@ class _LawyerCandidateInformationList
           return SmartRefresher(
             enablePullDown: false,
             enablePullUp: true,
-            footer: ClassicFooter(
+            footer: const ClassicFooter(
               loadingText: ' ',
               canLoadingText: ' ',
               idleText: ' ',
@@ -312,9 +313,9 @@ class _LawyerCandidateInformationList
             ),
           );
         } else if (snapshot.hasError) {
-          return BlankLoading();
+          return const BlankLoading();
         } else {
-          return BlankLoading();
+          return const BlankLoading();
         }
       },
     );

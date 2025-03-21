@@ -5,9 +5,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter_app_badge/flutter_app_badge.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:lc/component/link_url_in.dart';
@@ -51,7 +52,10 @@ import '../pages/notarial_services_attorney/nsa_report_policy.dart';
 import '../pages/profile/identity_verification_v2.dart';
 
 class MenuV3 extends StatefulWidget {
+  const MenuV3({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MenuV3 createState() => _MenuV3();
 }
 
@@ -65,32 +69,32 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     });
   }
 
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   late DateTime currentBackPressTime;
 
   // Profile profile = new Profile(model: Future.value({}));
   // Profile profile;
 
-  late Future<dynamic> _futureProfile;
-  Future<dynamic> _futureOrganizationImage;
-  Future<dynamic> _futureNews;
-  Future<dynamic> _futureAboutUs;
-  Future<dynamic> _futureEventCalendar;
-  Future<dynamic> _futureMainPopUp;
-  Future<dynamic> _futureKnowledge;
-  Future<dynamic> _futurePrivilege;
-  Future<dynamic> _futurePoi;
-  Future<dynamic> _futureNotification;
+  late Future<dynamic> _futureProfile = Future.value();
+  late Future<dynamic> _futureOrganizationImage;
+  late Future<dynamic> _futureNews;
+  late Future<dynamic> _futureAboutUs;
+  late Future<dynamic> _futureEventCalendar;
+  late Future<dynamic> _futureMainPopUp;
+  late Future<dynamic> _futureKnowledge;
+  late Future<dynamic> _futurePrivilege;
+  late Future<dynamic> _futurePoi;
+  late Future<dynamic> _futureNotification;
 
-  LatLng latLng = LatLng(0, 0);
-  Future<dynamic> _futureNoti;
+  LatLng latLng = const LatLng(0, 0);
+  late Future<dynamic> _futureNoti;
   // Future<dynamic> _futureKnowledge;
   // Future<dynamic> _futurePoll;
   // Future<dynamic> _futureFaq;
   // Future<dynamic> _futurePrivilege;
 
   String currentLocation = '-';
-  final seen = Set<String>();
+  final seen = <String>{};
   List unique = [];
   List resultImageLv0 = [];
   List imageLv0 = [];
@@ -98,13 +102,12 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   bool hasCheckOut = false;
 
   String profileCode = "";
-
-  User userData;
+  User? userData;
   bool notShowOnDay = false;
   bool hiddenMainPopUp = false;
 
   String userCode = '';
-  String _imageUrl;
+  late String _imageUrl;
   String ocategory = '';
 
   dynamic _newsCount;
@@ -128,10 +131,13 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
 
   int add_badger = 0;
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  StreamSubscription<Map> _notificationSubscription;
+  // late StreamSubscription<Map> _notificationSubscription;
+  late StreamSubscription _notificationSubscription =
+      const Stream.empty().listen((event) {});
+
   List<dynamic> mockBannerList = [];
   int _currentBanner = 1;
 
@@ -139,10 +145,6 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   void initState() {
     _callRead();
     super.initState();
-    // NotificationService.instance.start();
-    // _notificationSubscription = NotificationsBloc.instance.notificationStream
-    //     .listen(_performActionOnNotification);
-
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -156,25 +158,6 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.transparent,
-      // floatingActionButton: InkWell(
-      //   child: Image.asset(
-      //     'assets/images/buttonVote.png',
-      //     height: 50,
-      //   ),
-      //   //lcCategory เป็นtrue คือ 1=สมาชิก เป็นfalse คือ 2=ทนายอาสา
-      //   onTap: () => lcCategory
-      //       ? _buildModalVote()
-      //       : Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //             builder: (context) => LawyerList(
-      //               model: _futureProfile,
-      //               selectedVote: true,
-      //             ),
-      //           ),
-      //         ),
-      // ),
       appBar: headerProfileV3(
         context,
         title: "สภาทนายความ",
@@ -185,14 +168,14 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
         callback: _readNoti,
       ),
       body: WillPopScope(
+        onWillPop: confirmExit,
         child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (OverscrollIndicatorNotification overScroll) {
-            overScroll.disallowGlow();
+            overScroll.disallowIndicator();
             return false;
           },
           child: _buildBackground(),
         ),
-        onWillPop: confirmExit,
       ),
     );
   }
@@ -207,7 +190,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
 
   _buildBackground() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xFFFFFFFF),
         // gradient: LinearGradient(
         //   colors: [
@@ -227,7 +210,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   _buildNotificationListener() {
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (OverscrollIndicatorNotification overScroll) {
-        overScroll.disallowGlow();
+        overScroll.disallowIndicator();
         return false;
       },
       child: _buildSmartRefresher(),
@@ -240,9 +223,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
       enablePullUp: false,
       header: WaterDropHeader(
         complete: Container(
-          child: Text(''),
+          child: const Text(''),
         ),
-        completeDuration: Duration(milliseconds: 0),
+        completeDuration: const Duration(milliseconds: 0),
       ),
       controller: _refreshController,
       onRefresh: _onRefresh,
@@ -263,13 +246,13 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   _buildListView({dynamic model}) {
     return ListView(
       shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       children: [
         Container(
-          decoration: BoxDecoration(
-            borderRadius: new BorderRadius.only(
-              bottomLeft: const Radius.circular(15.0),
-              bottomRight: const Radius.circular(15.0),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(15.0),
+              bottomRight: Radius.circular(15.0),
             ),
             // color: Color(0XFFE8F6F8),
           ),
@@ -277,13 +260,13 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                  padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
                   child: Row(
                     children: [
                       Expanded(
                         child: _profile(model: model),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 25,
                       ),
                       Expanded(
@@ -306,11 +289,11 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               //         padding: EdgeInsets.only(left: 10, right: 10),
               //         child: _buildBottomProfile(),
               //       ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SizedBox(
                     height: heightCalculate(160),
                     child: _buildBanner(),
                   )),
@@ -324,8 +307,8 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Text(
                       'บริการจากสภาทนายฯ',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -338,9 +321,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
             ],
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
               Row(
@@ -352,13 +335,13 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       'imageUrl': 'assets/menu/สารสภาทนายความ.png'
                     }, true),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: InkWell(
                       onTap: () {
                         _callReadPolicyNsa();
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: heightCalculate(
                             (MediaQuery.of(context).size.height / 100) * 23),
                         height: heightCalculate(
@@ -375,7 +358,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
@@ -385,7 +368,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       'imageUrl': 'assets/menu/สิทธิประโยชน์.png'
                     }, true),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: _buildButtonMenu({
                       'code': 'NEWS',
@@ -395,7 +378,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   )
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
@@ -405,7 +388,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       'imageUrl': 'assets/menu/ปฏิทินกิจกรรม.png'
                     }, true),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: _buildButtonMenu({
                       'code': 'CREMATION',
@@ -415,7 +398,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   )
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
@@ -425,7 +408,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       'imageUrl': 'assets/menu/สืบค้นฐานข้อมูล.png'
                     }, true),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: _buildButtonMenu({
                       'code': 'E_SERVICE',
@@ -435,10 +418,10 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   )
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: heightCalculate(
                         (MediaQuery.of(context).size.height / 100) * 22),
                     height: heightCalculate(
@@ -451,7 +434,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -500,7 +483,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => IdentityVerificationV2Page(),
+                            builder: (context) => IdentityVerificationV2Page(
+                              title: '',
+                            ),
                           ),
                         ).then(
                           (value) => _futureProfile =
@@ -508,8 +493,8 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                         );
                 },
                 child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xFF2D9CED)),
                     child: Row(
@@ -522,9 +507,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                               child: Container(
                                   width: 35,
                                   height: 35,
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 8),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
@@ -532,10 +517,10 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                                   child: Container(
                                     width: 20,
                                     height: 15.49,
-                                    padding: EdgeInsets.all(1.0),
+                                    padding: const EdgeInsets.all(1.0),
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Color(0xFF2D9CED),
+                                            color: const Color(0xFF2D9CED),
                                             width: 1,
                                             style: BorderStyle.solid)),
                                     child: Image.asset(
@@ -566,7 +551,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                     )),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Expanded(
@@ -595,8 +580,8 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                         );
                 },
                 child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xFFF2FAFF)),
                     child: Row(
@@ -609,14 +594,14 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                               child: Container(
                                   width: 35,
                                   height: 35,
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 8),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                   ),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 20,
                                     height: 20,
                                     child: Image.asset(
@@ -632,7 +617,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                                     : 'แสดงใบอนุญาตทนายความ',
                                 // บริการอื่นๆ
                                 style: TextStyle(
-                                  color: Color(0xFF2D9CED),
+                                  color: const Color(0xFF2D9CED),
                                   fontSize:
                                       model["lcCategory"] == '1' ? 15.0 : 12.0,
                                   fontWeight: FontWeight.w500,
@@ -651,12 +636,13 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     );
   }
 
+  // ignore: unused_element
   _buildBottomProfile(dynamic model, bool isCategory) {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       alignment: Alignment.center,
       height: 60,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xFF1B6CA8),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(15),
@@ -683,7 +669,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                         );
                       },
                       child: CircleAvatar(
-                        backgroundColor: Color(0xFF011895),
+                        backgroundColor: const Color(0xFF011895),
                         radius: 30,
                         child: Image.asset(
                           "assets/logo/icons/Group6697.png",
@@ -700,7 +686,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Container(
-                          child: Text(
+                          child: const Text(
                             'ตรวจสอบข้อมูล',
                             style: TextStyle(
                               color: Colors.white,
@@ -711,7 +697,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                           ),
                         ),
                         Container(
-                          child: Text(
+                          child: const Text(
                             'ใบอนุญาตทนายความ',
                             style: TextStyle(
                               color: Colors.white,
@@ -745,7 +731,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                         );
                       },
                       child: CircleAvatar(
-                        backgroundColor: Color(0xFF011895),
+                        backgroundColor: const Color(0xFF011895),
                         radius: 30,
                         child: Image.asset(
                           "assets/logo/icons/dotsmenu.png",
@@ -757,7 +743,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                     ),
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       'บริการอื่นๆ',
                       style: TextStyle(
                         color: Colors.white,
@@ -924,7 +910,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
             }
           },
           child: (model['code'] != '')
-              ? Container(
+              ? SizedBox(
                   // padding: EdgeInsets.symmetric(horizontal: 10),
                   width: heightCalculate((MediaQuery.of(context).size.height)),
                   height: heightCalculate(
@@ -953,7 +939,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.red),
-                  child: Text(
+                  child: const Text(
                     'N',
                     style: TextStyle(
                       fontSize: 15,
@@ -979,7 +965,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   }
 
   void _onLoading() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1000));
     _refreshController.loadComplete();
   }
 
@@ -1021,7 +1007,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EventCalendarForm(
+              builder: (context) => EventCalendarFormPage(
                 code: message['code'],
                 model: _eventPage[0],
               ),
@@ -1109,6 +1095,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                 builder: (context) => NotificationExpireForm(
                   code: message['code'],
                   model: _notificationPage[0],
+                  url: '',
+                  urlGallery: '',
+                  urlComment: '',
                 ),
               ),
             );
@@ -1122,7 +1111,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   _buildBanner() {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: (((MediaQuery.of(context).size.width *
                           MediaQuery.of(context).size.height) /
                       MediaQuery.of(context).size.height) -
@@ -1174,8 +1163,8 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                           }
                         },
                         child: ClipRRect(
-                          borderRadius: _currentBanner == (index ?? 0)
-                              ? BorderRadius.all(Radius.circular(20))
+                          borderRadius: _currentBanner == (index)
+                              ? const BorderRadius.all(Radius.circular(20))
                               : BorderRadius.circular(0),
                           child: CachedNetworkImage(
                             imageUrl: item['imageUrl'],
@@ -1199,7 +1188,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               return Container(
                 width: _currentBanner == index ? 17.5 : 7.0,
                 height: 7.0,
-                margin: EdgeInsets.all(2.0),
+                margin: const EdgeInsets.all(2.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
@@ -1272,8 +1261,8 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
 
   _readCheckIn() async {
     // read checkIn
-    var now = new DateTime.now();
-    DateTime date = new DateTime(now.year, now.month, now.day);
+    var now = DateTime.now();
+    DateTime date = DateTime(now.year, now.month, now.day);
     var dateString = DateFormat('yyyyMMdd').format(date).toString();
     var resCheckIn =
         await postDio(server + 'm/v2/volunteeLawyer/checkIn/read', {
@@ -1293,7 +1282,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   }
 
   _callRead() async {
-    profileCode = await storage.read(key: 'profileCode18');
+    profileCode = (await storage.read(key: 'profileCode18'))!;
     if (profileCode != '' && profileCode != null) {
       _futureProfile = postDio(profileReadApi, {'code': profileCode});
       _futureOrganizationImage =
@@ -1320,12 +1309,12 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     if (value == '' || value == null) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => LoginPage(),
+          builder: (context) => const LoginPage(),
         ),
         (Route<dynamic> route) => false,
       );
     }
-    var data = json.decode(value);
+    var data = json.decode(value!);
 
     userCode = data['code'];
     // final result = await postObjectData("m/policy/read", {
@@ -1360,7 +1349,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
       lcCategory = profile['lcCategory'] == "1" ? true : false;
       idcard = profile['idcard'] != '' ? profile['idcard'] : '';
       ocategory = profile['ocategory'];
-      userData = new User(
+      userData = User(
         username: data['username'] != '' ? data['username'] : '',
         password: data['password'] != '' ? data['password'].toString() : '',
         firstName: data['firstName'] != '' ? data['firstName'] : '',
@@ -1388,7 +1377,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     _futurePrivilege = postDio('${privilegeApi}read', {'skip': 0, 'limit': 10});
     postDio('${mainBannerApi}read', {'skip': 0, 'limit': 10})
         .then((value) async => {
-              await setState(() {
+              setState(() {
                 mockBannerList = value;
               })
             });
@@ -1399,21 +1388,21 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
       'limit': 10,
       'isHighlight': true,
       'category': '',
-      'isPublic': userData.status == "N" ? true : false,
+      'isPublic': userData!.status == "N" ? true : false,
     });
     _futureNews = postDio('${newsApi}read', {
       'skip': 0,
       'limit': 10,
       'isHighlight': true,
       'category': '',
-      'isPublic': userData.status == "N" ? true : false,
+      'isPublic': userData!.status == "N" ? true : false,
     });
     _futureEventCalendar = postDio('${eventCalendarApi}read', {
       'skip': 0,
       'limit': 10,
       'isHighlight': true,
       'category': '',
-      'isPublic': userData.status == "N" ? true : false,
+      'isPublic': userData!.status == "N" ? true : false,
     });
     _futureAboutUs = postDio('${aboutUsApi}read', {});
 
@@ -1442,10 +1431,11 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   }
 
   _addBadger() async {
-    String storageNewsCount = await storage.read(key: 'isBadgerNews');
-    String storageEventCount = await storage.read(key: 'isBadgerEvent');
-    String storagePollCount = await storage.read(key: 'isBadgerPoll');
-    String storagePrivilegeCount = await storage.read(key: 'isBadgerPrivilege');
+    String? storageNewsCount = await storage.read(key: 'isBadgerNews');
+    String? storageEventCount = await storage.read(key: 'isBadgerEvent');
+    String? storagePollCount = await storage.read(key: 'isBadgerPoll');
+    String? storagePrivilegeCount =
+        await storage.read(key: 'isBadgerPrivilege');
 
     _isNewsCount = storageNewsCount == '1' ? true : false;
     _isEventCount = storageEventCount == '1' ? true : false;
@@ -1471,7 +1461,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     else
       add_badger = 0;
 
-    FlutterAppBadger.updateBadgeCount(add_badger);
+    // FlutterAppBadger.updateBadgeCount(add_badger);
+    // badges.FlutterAppBadge.updateBadge(add_badger);
+    FlutterAppBadge.count(add_badger);
 
     _updateBadgerStorage('isBadgerNews', _isNewsCount ? '1' : '0');
     _updateBadgerStorage('isBadgerEvent', _isEventCount ? '1' : '0');
@@ -1488,64 +1480,81 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
 
   getImageLv0() async {
     await storage.delete(key: 'imageLv0');
+
     var value = await storage.read(key: 'dataUserLoginLC');
-    if (value == '' || value == null) {
+    if (value == null || value == '') {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => LoginPage(),
+          builder: (context) => const LoginPage(),
         ),
         (Route<dynamic> route) => false,
       );
+      return; // return เพื่อหยุดการทำงานหากไม่มีข้อมูล
     }
-    var data = json.decode(value);
+
+    var data =
+        json.decode(value); // value! ไม่ควรใช้ตรงนี้เพราะเราได้ตรวจสอบค่าแล้ว
+    if (data['countUnit'] == null) {
+      // หากไม่มี countUnit ใน data ก็หยุดการทำงาน
+      return;
+    }
     var countUnit = json.decode(data['countUnit']);
     var rawLv0 = [];
 
-    if (rawLv0.length == 0) {
-      countUnit
-          .map((e) => {
-                if (e['status'] != null)
-                  {
-                    if (e['status'] == 'A')
-                      {
-                        rawLv0.add(e['lv0'].toString()),
-                      }
-                  }
-              })
-          .toList();
+    if (rawLv0.isEmpty) {
+      countUnit.forEach((e) {
+        if (e['status'] != null && e['status'] == 'A') {
+          rawLv0.add(e['lv0'].toString());
+        }
+      });
     }
 
-    unique = rawLv0.where((str) => seen.add(str)).toList();
+    var unique = rawLv0.toSet().toList(); // ใช้ Set เพื่อหลีกเลี่ยงค่าซ้ำ
 
-    rawLv0.forEach((element) async {
-      await postDio(server + 'organization/read', {'code': element})
-          .then((value) => {
-                if (value.length > 0) {imageLv0.add(value[0]['imageUrl'])}
-              });
-    });
+    // ใช้ for-in loop เพื่อทำงานแบบ asynchronous อย่างถูกต้อง
+    for (var element in unique) {
+      var response =
+          await postDio(server + 'organization/read', {'code': element});
+      if (response != null && response.isNotEmpty) {
+        imageLv0.add(response[0]['imageUrl']);
+      } else {
+        print('No response or empty data for code: $element');
+      }
+    }
 
-    storage.write(
+    // เก็บค่าผลลัพธ์ใน storage
+    await storage.write(
       key: 'imageLv0',
       value: jsonEncode(imageLv0),
     );
+
+    // อ่านค่า imageLv0 จาก storage
     var image0 = await storage.read(key: 'imageLv0');
-    resultImageLv0 = json.decode(image0);
-    unique = [];
-    imageLv0 = [];
+    if (image0 != null) {
+      resultImageLv0 = json.decode(image0);
+    } else {
+      print("No image data found");
+    }
+
+    unique.clear();
+    imageLv0.clear();
   }
 
   _getLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
 
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude, position.longitude,
-        localeIdentifier: 'th');
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
 
-    setState(() {
-      latLng = LatLng(position.latitude, position.longitude);
-      currentLocation = placemarks.first.administrativeArea;
-    });
+      setState(() {
+        latLng = LatLng(position.latitude, position.longitude);
+        currentLocation = placemarks.first.administrativeArea ?? '';
+      });
+    } catch (e) {
+      print('Get location error: $e');
+    }
   }
 
   Future<Null> _callReadPolicy() async {
@@ -1562,7 +1571,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               // Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (context) => MenuV3(),
+                  builder: (context) => const MenuV3(),
                 ),
                 (Route<dynamic> route) => false,
               );
@@ -1589,13 +1598,17 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     if (policy.length > 0) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => NSAMainForm(),
+          builder: (context) => const NSAMainForm(
+            title: '',
+          ),
         ),
       );
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => NsaReportPolicy(),
+          builder: (context) => const NsaReportPolicy(
+            title: '',
+          ),
         ),
       );
     }
@@ -1699,20 +1712,20 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
         dataValue = null;
       }
 
-      var now = new DateTime.now();
-      DateTime date = new DateTime(now.year, now.month, now.day);
+      var now = DateTime.now();
+      DateTime date = DateTime(now.year, now.month, now.day);
 
       if (dataValue != null) {
         var index = dataValue.indexWhere(
           (c) =>
-              c['username'] == userData.username &&
+              c['username'] == userData!.username &&
               c['date'].toString() ==
                   DateFormat("ddMMyyyy").format(date).toString() &&
               c['boolean'] == "true",
         );
 
         if (index == -1) {
-          this.setState(() {
+          setState(() {
             hiddenMainPopUp = false;
           });
           return showDialog(
@@ -1726,18 +1739,20 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                 child: MainPopupDialog(
                   model: _futureMainPopUp,
                   type: 'mainPopup',
-                  username: userData.username,
+                  username: userData!.username,
+                  url: '',
+                  urlGallery: '',
                 ),
               );
             },
           );
         } else {
-          this.setState(() {
+          setState(() {
             hiddenMainPopUp = true;
           });
         }
       } else {
-        this.setState(() {
+        setState(() {
           hiddenMainPopUp = false;
         });
         return showDialog(
@@ -1751,7 +1766,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               child: MainPopupDialog(
                 model: _futureMainPopUp,
                 type: 'mainPopup',
-                username: userData.username,
+                username: userData!.username,
+                url: '',
+                urlGallery: '',
               ),
             );
           },
@@ -1763,7 +1780,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   Future<bool> confirmExit() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       toastFail(
         context,
@@ -1821,29 +1838,29 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
         builder: (context) {
           return Material(
             type: MaterialType.transparency,
-            child: new Container(
+            child: Container(
               height: 300,
               width: double.infinity,
-              margin: EdgeInsets.only(top: 2),
+              margin: const EdgeInsets.only(top: 2),
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
+                  borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(15),
                   ),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 6,
-                      offset: Offset(0.75, 0),
+                      offset: const Offset(0.75, 0),
                       color: Colors.grey.withOpacity(0.4),
                     )
                   ]),
               child: Stack(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
                     child: Column(
                       children: [
-                        Center(
+                        const Center(
                           child: Text(
                             'ข้อมูลการเลือกตั้ง',
                             style: TextStyle(
@@ -1853,7 +1870,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40),
+                        const SizedBox(height: 40),
                         textRowButtonGo(
                           context,
                           title: 'ข้อมูลผู้สมัคร',
@@ -1889,11 +1906,11 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                       child: Container(
                         height: 35,
                         width: 35,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xFFF28A34),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.clear,
                           size: 20,
                           color: Colors.white,
@@ -1922,7 +1939,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               height: 200,
               color: Colors.white,
               alignment: Alignment.center,
-              child: QrImage(
+              child: QrImageView(
                 data: code,
                 version: QrVersions.auto,
                 size: 200,
@@ -1938,10 +1955,10 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
                   height: 40,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Color(0xFFED6B2D),
+                    color: const Color(0xFFED6B2D),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: new Text(
+                  child: const Text(
                     "ตกลง",
                     style: TextStyle(
                       fontSize: 20,

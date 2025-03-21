@@ -82,8 +82,8 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   _callTimer(time) async {
-    var _duration = Duration(seconds: time);
-    return Timer(_duration, _callNavigatorPage);
+    var duration = Duration(seconds: time);
+    return Timer(duration, _callNavigatorPage);
   }
 
   _callNavigatorPage() async {
@@ -91,16 +91,17 @@ class _SplashPageState extends State<SplashPage> {
     String? value = await storage.read(key: 'profileCode18');
 
     if (value != null && value != '') {
-      // Navigator.of(context).pushAndRemoveUntil(
-      //   MaterialPageRoute(
-      //     builder: (context) => MenuV3(),
-      //   ),
-      //   (Route<dynamic> route) => false,
-      // );
-    } else {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => LoginPage(),
+          builder: (context) => MenuV3(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
         ),
         (Route<dynamic> route) => false,
       );

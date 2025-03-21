@@ -5,11 +5,12 @@ import 'package:lc/pages/lawyer/lawyer_result_of_vote_counting_list_vertical.dar
 import 'package:lc/shared/api_provider.dart';
 
 class LawyerResultOfVoteCountingList extends StatefulWidget {
-  LawyerResultOfVoteCountingList({
-    Key? key,
-  }) : super(key: key);
+  const LawyerResultOfVoteCountingList({
+    super.key,
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _LawyerResultOfVoteCountingList createState() =>
       _LawyerResultOfVoteCountingList();
 }
@@ -20,7 +21,7 @@ class _LawyerResultOfVoteCountingList
   late Future<dynamic> futureModel;
   late Future<dynamic> futureModel2;
 
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   @override
   void dispose() {
@@ -53,7 +54,7 @@ class _LawyerResultOfVoteCountingList
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xFFF7F7F7),
+        backgroundColor: const Color(0xFFF7F7F7),
         body: Column(
           children: [
             InkWell(
@@ -72,8 +73,8 @@ class _LawyerResultOfVoteCountingList
                       'assets/logo/icons/backLeft.png',
                       height: 25,
                     ),
-                    SizedBox(width: 20),
-                    Text(
+                    const SizedBox(width: 20),
+                    const Text(
                       'ผลการนับคะแนน',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -89,7 +90,7 @@ class _LawyerResultOfVoteCountingList
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +98,7 @@ class _LawyerResultOfVoteCountingList
                   Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
+                      color: const Color(0xFFFFFFFF),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
@@ -112,19 +113,19 @@ class _LawyerResultOfVoteCountingList
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
                                 color: selectedType == '0'
-                                    ? Color(0xFF011895)
-                                    : Color(0xFFFFFFFF),
+                                    ? const Color(0xFF011895)
+                                    : const Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Text(
                                 'ผู้สมัครนายก',
                                 style: TextStyle(
                                   color: selectedType == '0'
-                                      ? Color(0xFFFFFFFF)
-                                      : Color(0x80707070),
+                                      ? const Color(0xFFFFFFFF)
+                                      : const Color(0x80707070),
                                   fontFamily: 'Kanit',
                                   fontSize: 20,
                                   fontWeight: selectedType == '0'
@@ -145,19 +146,19 @@ class _LawyerResultOfVoteCountingList
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
                                 color: selectedType == '1'
-                                    ? Color(0xFF011895)
-                                    : Color(0xFFFFFFFF),
+                                    ? const Color(0xFF011895)
+                                    : const Color(0xFFFFFFFF),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Text(
                                 'ผู้สมัครกรรมการ',
                                 style: TextStyle(
                                   color: selectedType == '1'
-                                      ? Color(0xFFFFFFFF)
-                                      : Color(0x80707070),
+                                      ? const Color(0xFFFFFFFF)
+                                      : const Color(0x80707070),
                                   fontFamily: 'Kanit',
                                   fontSize: 20,
                                   fontWeight: selectedType == '1'
@@ -188,18 +189,18 @@ class _LawyerResultOfVoteCountingList
 
   rowVote() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        color: Color(0xFFEEEEEE),
+        color: const Color(0xFFEEEEEE),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: Container(
+            const Padding(
+              padding: EdgeInsets.only(right: 15),
+              child: SizedBox(
                 width: 30,
                 child: Text(
                   'เบอร์',
@@ -214,7 +215,7 @@ class _LawyerResultOfVoteCountingList
             Expanded(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
+                child: const Text(
                   'ชื่อผู้สมัคร',
                   style: TextStyle(
                     fontFamily: 'Kanit',
@@ -224,9 +225,9 @@ class _LawyerResultOfVoteCountingList
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 15, top: 10, bottom: 10),
-              child: Container(
+            const Padding(
+              padding: EdgeInsets.only(right: 15, top: 10, bottom: 10),
+              child: SizedBox(
                 width: 50,
                 child: Text(
                   'คะแนน',
@@ -260,9 +261,9 @@ class _LawyerResultOfVoteCountingList
             title: 'ผู้สมัครนายก',
           );
         } else if (snapshot.hasError) {
-          return BlankLoading();
+          return const BlankLoading();
         } else {
-          return BlankLoading();
+          return const BlankLoading();
         }
       },
     );
@@ -284,22 +285,22 @@ class _LawyerResultOfVoteCountingList
             title: 'ผู้สมัครกรรมการ',
           );
         } else if (snapshot.hasError) {
-          return BlankLoading();
+          return const BlankLoading();
         } else {
-          return BlankLoading();
+          return const BlankLoading();
         }
       },
     );
   }
   //
 
-  int parseIntPrefix(String s) {
+  int? parseIntPrefix(String s) {
     var re = RegExp(r'(-?[0-9]+).*');
     var match = re.firstMatch(s);
     if (match == null) {
       return null;
     }
-    return int.parse(match.group(1));
+    return int.parse(match.group(1)!);
   }
 
   int compareIntPrefixes(String a, String b) {

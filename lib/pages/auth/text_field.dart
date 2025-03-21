@@ -8,7 +8,7 @@ labelTextField(String label, Icon icon) {
     children: <Widget>[
       icon,
       Text(
-        ' ' + label,
+        ' $label',
         style: TextStyle(
           fontSize: 20.000,
           fontFamily: 'Kanit',
@@ -67,20 +67,17 @@ textFieldLogin({
   return SizedBox(
     height: 40.0,
     child: TextField(
-      inputFormatters: [
-        // FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9.@_]')),
-        FilteringTextInputFormatter.deny(RegExp(r'\s'))
-      ],
-      // keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
       obscureText: isPassword ? visibility : false,
       controller: model,
       onChanged: (String value) {
-        onChanged!();
+        if (onChanged != null) {
+          onChanged();
+        }
       },
       enabled: enabled,
       cursorColor: Color(0xFF216DA6),
       style: TextStyle(
-        // color: Colors.white,
         fontWeight: FontWeight.normal,
         fontFamily: 'Kanit',
         fontSize: 15.00,
@@ -95,12 +92,14 @@ textFieldLogin({
                     ? Icon(Icons.visibility)
                     : Icon(Icons.visibility_off),
                 onPressed: () {
-                  callback!();
+                  if (callback != null) {
+                    callback();
+                  }
                 },
               )
             : null,
         contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 5.0, 5.0),
-        hintText: '',
+        hintText: hintText,
         labelText: labelText,
         labelStyle: TextStyle(
           fontFamily: 'Kanit',

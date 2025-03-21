@@ -134,7 +134,7 @@ Container textRowButtonGo(
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LawyerCandidateInformationList(),
+                        builder: (context) => const LawyerCandidateInformationList(),
                       ),
                     )
                   : typeBtn == 'pageRVOC'
@@ -142,7 +142,7 @@ Container textRowButtonGo(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                LawyerResultOfVoteCountingList(),
+                                const LawyerResultOfVoteCountingList(),
                           ),
                         )
                       : null

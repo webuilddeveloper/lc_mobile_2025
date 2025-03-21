@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:lc/pages/lawyer/lawyer_candidate_information_from.dart';
 
 class LawyerCandidateInformationFromVertical extends StatefulWidget {
-  LawyerCandidateInformationFromVertical({
-    Key key,
+  const LawyerCandidateInformationFromVertical({
+    super.key,
     this.model,
-    this.title,
-  }) : super(key: key);
+    required this.title,
+  });
 
   final dynamic model;
   final String title;
 
   @override
+  // ignore: library_private_types_in_public_api
   _LawyerCandidateInformationFromVertical createState() =>
       _LawyerCandidateInformationFromVertical();
 }
@@ -27,12 +28,12 @@ class _LawyerCandidateInformationFromVertical
   Widget build(BuildContext context) {
     return GridView.builder(
       padding: EdgeInsets.zero,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         childAspectRatio: 0.8,
         mainAxisSpacing: 15,
       ),
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       itemCount: widget.model.length,
       itemBuilder: (context, index) {
@@ -55,12 +56,12 @@ class _LawyerCandidateInformationFromVertical
       },
       child: Container(
         margin: index % 4 == 0
-            ? EdgeInsets.only(right: 4)
+            ? const EdgeInsets.only(right: 4)
             : index % 4 == 1
-                ? EdgeInsets.only(left: 4, right: 4)
+                ? const EdgeInsets.only(left: 4, right: 4)
                 : index % 4 == 2
-                    ? EdgeInsets.only(left: 4, right: 4)
-                    : EdgeInsets.only(left: 4),
+                    ? const EdgeInsets.only(left: 4, right: 4)
+                    : const EdgeInsets.only(left: 4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -75,10 +76,10 @@ class _LawyerCandidateInformationFromVertical
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               'หมายเลข ${model['numberBoard']}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
                 color: Color(0xFF011895),
                 fontFamily: 'Kanit',
