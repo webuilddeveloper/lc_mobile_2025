@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as dt_picker;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -1150,25 +1149,15 @@ class _NsaReportPayFormState extends State<NsaReportPayForm> {
   bool dataLoaded = false;
 
   _downloadQR() async {
-    // var _url =
-    //     "https://lc.we-builds.com/lc-document/images/news/4fc72d5a-f9e1-4b32-9f4d-ce3b8b0387e2/%E0%B8%8A%E0%B8%8D%E0%B8%8A%E0%B8%AD%E0%B8%87%E0%B8%97%E0%B8%B2%E0%B8%8B%E0%B8%B8.jpg";
+    var _url =
+        "https://lc.we-builds.com/lc-document/images/mainPopup/480fc513-34f7-4467-be05-437bc2a9e1cc/qrpayment.jpg";
     try {
-      // var response = await Dio()
-      //     .get(_url, options: Options(responseType: ResponseType.bytes));
-      // print('Image fetched successfully');
+      var response = await Dio()
+          .get(_url, options: Options(responseType: ResponseType.bytes));
+      print('Image fetched successfully');
 
-      // final result = await ImageGallerySaver.saveImage(
-      //   Uint8List.fromList(response.data),
-      //   quality: 100,
-      //   name: "_imageQR",
-      // );
-      // โหลดภาพจาก assets เป็น ByteData
-      ByteData byteData = await rootBundle.load('assets/qrpayment.jpg');
-      Uint8List uint8List = byteData.buffer.asUint8List();
-
-      // บันทึกภาพลงแกลเลอรี
       final result = await ImageGallerySaver.saveImage(
-        uint8List,
+        Uint8List.fromList(response.data),
         quality: 100,
         name: "_imageQR",
       );
