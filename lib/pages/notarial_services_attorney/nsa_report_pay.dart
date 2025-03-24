@@ -5,8 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as dt_picker;
+import 'package:flutter_image_gallery_saver/flutter_image_gallery_saver.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lc/pages/notarial_services_attorney/nsa_main.dart';
@@ -180,7 +181,7 @@ class _NsaReportPayFormState extends State<NsaReportPayForm> {
                       const SizedBox(height: 15),
                       InkWell(
                         onTap: () {
-                          _downloadQR(); // เรียกฟังก์ชันเมื่อถูกแตะ
+                          _downloadQR(context); // เรียกฟังก์ชันเมื่อถูกแตะ
                           print(
                               '--------select_downloadQR--------'); // พิมพ์แค่ตอนกด
                         },
@@ -1148,32 +1149,60 @@ class _NsaReportPayFormState extends State<NsaReportPayForm> {
   late String imageData;
   bool dataLoaded = false;
 
-  _downloadQR() async {
+  // _downloadQR() async {
+  //   var _url =
+  //       "https://lc.we-builds.com/lc-document/images/mainPopup/480fc513-34f7-4467-be05-437bc2a9e1cc/qrpayment.jpg";
+  //   try {
+  //     var response = await Dio()
+  //         .get(_url, options: Options(responseType: ResponseType.bytes));
+  //     print('Image fetched successfully');
+
+  //     final result = await ImageGallerySaver.saveImage(
+  //       Uint8List.fromList(response.data),
+  //       quality: 100,
+  //       name: "_imageQR",
+  //     );
+  //     print('Save result: $result');
+
+  //     if (result['isSuccess'] == true) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('ดาวน์โหลดรูปภาพเรียบร้อย')),
+  //       );
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('การดาวน์โหลดล้มเหลว')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error downloading image: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('เกิดข้อผิดพลาดในการดาวน์โหลด')),
+  //     );
+  //   }
+  // }
+  Future<void> _downloadQR(BuildContext context) async {
     var _url =
         "https://lc.we-builds.com/lc-document/images/mainPopup/480fc513-34f7-4467-be05-437bc2a9e1cc/qrpayment.jpg";
+
     try {
-      var response = await Dio()
-          .get(_url, options: Options(responseType: ResponseType.bytes));
+      var response = await Dio().get(
+        _url,
+        options: Options(responseType: ResponseType.bytes),
+      );
       print('Image fetched successfully');
 
-      final result = await ImageGallerySaver.saveImage(
-        Uint8List.fromList(response.data),
-        quality: 100,
-        name: "_imageQR",
-      );
-      print('Save result: $result');
+      // บันทึกรูปภาพไปยังแกลเลอรี
+      await FlutterImageGallerySaver.saveImage(
+          Uint8List.fromList(response.data));
 
-      if (result['isSuccess'] == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ดาวน์โหลดรูปภาพเรียบร้อย')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('การดาวน์โหลดล้มเหลว')),
-        );
-      }
+      // แจ้งเตือนว่าบันทึกสำเร็จ
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ดาวน์โหลดรูปภาพเรียบร้อย')),
+      );
     } catch (e) {
       print('Error downloading image: $e');
+
+      // แจ้งเตือนว่าบันทึกล้มเหลว
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('เกิดข้อผิดพลาดในการดาวน์โหลด')),
       );

@@ -72,10 +72,11 @@ dependencies:
   qr_flutter: ^4.1.0
   flutter_google_maps_webservices: ^1.1.1
   flutter_file_dialog: ^3.0.2
-  image_gallery_saver: ^2.0.3
   file_picker: ^9.2.1
   sliding_up_panel: ^2.0.0+1
   permission_handler: ^10.0.0
+  flutter_image_gallery_saver: ^0.0.2
+
   
 
 

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, library_private_types_in_public_api, deprecated_member_use
+
 import 'package:flutter_html/flutter_html.dart';
 import 'package:lc/component/carousel_form.dart';
 import 'package:lc/component/carousel_rotation.dart';
@@ -12,13 +14,13 @@ import 'package:url_launcher/url_launcher.dart';
 // ignore: must_be_immutable
 class ContentWithOutShare extends StatefulWidget {
   const ContentWithOutShare({
-    Key? key,
+    super.key,
     required this.code,
     required this.url,
     this.model,
     required this.urlGallery,
     required this.urlRotation,
-  }) : super(key: key);
+  });
 
   final String code;
   final String url;
@@ -33,7 +35,7 @@ class ContentWithOutShare extends StatefulWidget {
 class _ContentWithOutShare extends State<ContentWithOutShare> {
   late Future<dynamic> _futureModel;
   late Future<dynamic> _futureRotation;
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   List urlImage = [];
   List<ImageProvider> urlImageProvider = [];
@@ -91,7 +93,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
     return ListView(
       padding: EdgeInsets.zero,
       shrinkWrap: true, // 1st add
-      physics: ClampingScrollPhysics(), // 2nd
+      physics: const ClampingScrollPhysics(), // 2nd
       children: [
         Container(
           // width: 500.0,
@@ -104,14 +106,14 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
         ),
         Container(
           // color: Colors.green,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             right: 10.0,
             left: 10.0,
           ),
-          margin: EdgeInsets.only(right: 50.0, top: 10.0),
+          margin: const EdgeInsets.only(right: 50.0, top: 10.0),
           child: Text(
             '${model['title']}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18.0,
               fontFamily: 'Kanit',
               fontWeight: FontWeight.w500,
@@ -128,7 +130,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
               ),
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.1,
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(model['imageUrlCreateBy']),
@@ -136,13 +138,13 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.6,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '${model['createBy']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15,
                             fontFamily: 'Kanit',
                             fontWeight: FontWeight.w300,
@@ -156,7 +158,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
                                   ? dateStringToDate(model['createDate'])
                                   // + ' | '
                                   : '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 10,
                                 fontFamily: 'Kanit',
                                 fontWeight: FontWeight.w300,
@@ -204,7 +206,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
           height: 10,
         ),
         model['fileUrl'] != '' ? fileUrl(model) : Container(),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         if (widget.urlRotation != '') _buildRotation()
       ],
     );
@@ -215,7 +217,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
       alignment: Alignment.center,
       width: double.infinity,
       height: 45.0,
-      padding: EdgeInsets.symmetric(horizontal: 80.0),
+      padding: const EdgeInsets.symmetric(horizontal: 80.0),
       child: Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(10.0),
@@ -224,7 +226,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
             border: Border.all(
-              color: Color(0xFFE7CF72),
+              color: const Color(0xFFE7CF72),
             ),
           ),
           child: MaterialButton(
@@ -234,7 +236,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
             },
             child: Text(
               '${model['textButton']}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF1B6CA8),
                 fontFamily: 'Kanit',
               ),
@@ -257,7 +259,7 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
         onTap: () {
           launchInWebViewWithJavaScript('${model['fileUrl']}');
         },
-        child: Text(
+        child: const Text(
           'เปิดเอกสารแนบ',
           style: TextStyle(
             fontFamily: 'Kanit',
@@ -271,29 +273,26 @@ class _ContentWithOutShare extends State<ContentWithOutShare> {
   }
 
   _buildRotation() {
-    return Container(
-      // padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-      child: CarouselRotation(
-        model: _futureRotation,
-        nav: (String path, String action, dynamic model, String code) {
-          if (action == 'out') {
-            launchInWebViewWithJavaScript(path);
-            // launchURL(path);
-          } else if (action == 'in') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CarouselForm(
-                  code: code,
-                  model: model,
-                  url: mainBannerApi,
-                  urlGallery: bannerGalleryApi,
-                ),
+    return CarouselRotation(
+      model: _futureRotation,
+      nav: (String path, String action, dynamic model, String code) {
+        if (action == 'out') {
+          launchInWebViewWithJavaScript(path);
+          // launchURL(path);
+        } else if (action == 'in') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CarouselForm(
+                code: code,
+                model: model,
+                url: mainBannerApi,
+                urlGallery: bannerGalleryApi,
               ),
-            );
-          }
-        },
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 }

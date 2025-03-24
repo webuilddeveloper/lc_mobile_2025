@@ -4,8 +4,9 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_gallery_saver/flutter_image_gallery_saver.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lc/shared/extension.dart';
 
@@ -15,8 +16,7 @@ import '../../widget/text_form_field.dart';
 import 'cremation_pay_confirm.dart';
 
 class CremationPayForm extends StatefulWidget {
-  const CremationPayForm({Key? key, required this.title, this.model})
-      : super(key: key);
+  const CremationPayForm({super.key, required this.title, this.model});
   final String title;
   final dynamic model;
 
@@ -29,27 +29,27 @@ class _CremationPayFormState extends State<CremationPayForm> {
   String memberStatus = "0";
   final txtPrice = TextEditingController();
   String profileCode = "";
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String selectedType = '0';
   late XFile _image;
   dynamic itemImage1 = {"imageUrl": "", "id": "", "imageType": ""};
   final tempPrice = TextEditingController();
-  Random random = new Random();
+  Random random = Random();
   final _formKey = GlobalKey<FormState>();
 
   String totalAmount = '0';
   String updateDate = '-';
-  List<dynamic> _itemImage = [];
+  final List<dynamic> _itemImage = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color(0xFFF7F7F7),
+      backgroundColor: const Color(0xFFF7F7F7),
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFFF7F7F7),
+        backgroundColor: const Color(0xFFF7F7F7),
         flexibleSpace: Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top + 10,
@@ -64,16 +64,16 @@ class _CremationPayFormState extends State<CremationPayForm> {
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: Color(0x408AD2FF),
+                    color: const Color(0x408AD2FF),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back,
                     color: Color(0xFF2D9CED),
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: Text(
                   "ข้อมูลสมาชิกฌาปนกิจ",
                   style: TextStyle(
@@ -93,6 +93,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
+        // ignore: deprecated_member_use
         child: WillPopScope(
           // onWillPop: () => confirmExit(),
           // ignore: missing_return
@@ -101,7 +102,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
           },
           child: ListView(
             shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             children: [
               Container(
                 width: 400,
@@ -110,7 +111,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                 alignment: Alignment.center,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(top: 60),
+                    padding: const EdgeInsets.only(top: 60),
                     height: 320,
                     width: 340,
                     child: AspectRatio(
@@ -126,9 +127,9 @@ class _CremationPayFormState extends State<CremationPayForm> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: ClipRRect(
-                      borderRadius: new BorderRadius.circular(40.0),
+                      borderRadius: BorderRadius.circular(40.0),
                       child: Image.asset(
                           memberStatus == "0"
                               ? 'assets/images/fram_main1.png'
@@ -142,10 +143,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                   Positioned(
                     top: 100,
                     child: Text(
-                      totalAmount != null && totalAmount != ""
+                      totalAmount != ""
                           ? totalAmount
                           : '0',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 45.00,
                         fontFamily: 'Kanit',
                         fontWeight: FontWeight.w500,
@@ -153,7 +154,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     bottom: 115,
                     child: Text(
                       'ข้อมูลอัพเดตเมื่อ',
@@ -168,8 +169,8 @@ class _CremationPayFormState extends State<CremationPayForm> {
                   Positioned(
                     bottom: 95,
                     child: Text(
-                      updateDate != null && updateDate != '' ? updateDate : '-',
-                      style: TextStyle(
+                      updateDate != '' ? updateDate : '-',
+                      style: const TextStyle(
                         fontSize: 15.00,
                         fontFamily: 'Kanit',
                         fontWeight: FontWeight.w500,
@@ -184,64 +185,54 @@ class _CremationPayFormState extends State<CremationPayForm> {
                 child: Column(
                   children: [
                     memberStatus == "0"
-                        ? Container(
-                            child: Text(
-                              "ยอดเงินสงเคราะห์ล่วงหน้าคงเหลือ",
+                        ? const Text(
+                          "ยอดเงินสงเคราะห์ล่วงหน้าคงเหลือ",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF052598)),
+                          textAlign: TextAlign.center,
+                        )
+                        : memberStatus == "1"
+                            ? const Text(
+                              "ยอดเงินสงเคราะห์ค้างชำระ",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF052598)),
+                                  color: Color(0xFFED6B2D)),
+                              textAlign: TextAlign.center,
+                            )
+                            : const Text(
+                              "ท่านพ้นสภาพสมาชิก ",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFFED6B2D)),
                               textAlign: TextAlign.center,
                             ),
-                          )
-                        : memberStatus == "1"
-                            ? Container(
-                                child: Text(
-                                  "ยอดเงินสงเคราะห์ค้างชำระ",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFFED6B2D)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            : Container(
-                                child: Text(
-                                  "ท่านพ้นสภาพสมาชิก ",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFFED6B2D)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
                     memberStatus == "0"
                         ? Container()
                         : memberStatus == "1"
-                            ? Container(
-                                child: Text(
-                                  "เงินสงเคราะห์ล่วงหน้าและค่าบำรุงประจำปี",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFFED6B2D)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            : Container(
-                                child: Text(
-                                  "หากประสงค์กลับเข้าเป็นสมาชิก กรุณาติดต่อสภาทนายความ",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFFED6B2D)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                            ? const Text(
+                              "เงินสงเคราะห์ล่วงหน้าและค่าบำรุงประจำปี",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFFED6B2D)),
+                              textAlign: TextAlign.center,
+                            )
+                            : const Text(
+                              "หากประสงค์กลับเข้าเป็นสมาชิก กรุณาติดต่อสภาทนายความ",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFFED6B2D)),
+                              textAlign: TextAlign.center,
+                            ),
                     const SizedBox(height: 10),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +241,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                             alignment: Alignment.center,
                             // padding: EdgeInsets.symmetric(vertical: 7),
                             decoration: BoxDecoration(
-                              color: Color(0xFFD9D9D9),
+                              color: const Color(0xFFD9D9D9),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
@@ -268,8 +259,8 @@ class _CremationPayFormState extends State<CremationPayForm> {
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: selectedType == '0'
-                                            ? Color(0xFF2D9CED)
-                                            : Color(0xFFD9D9D9),
+                                            ? const Color(0xFF2D9CED)
+                                            : const Color(0xFFD9D9D9),
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Text(
@@ -280,7 +271,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500,
                                           decorationColor: selectedType == '0'
-                                              ? Color(0xFF2D9CED)
+                                              ? const Color(0xFF2D9CED)
                                               : Colors.transparent,
                                           decorationThickness: 2,
                                         ),
@@ -301,8 +292,8 @@ class _CremationPayFormState extends State<CremationPayForm> {
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: selectedType == '1'
-                                            ? Color(0xFF2D9CED)
-                                            : Color(0xFFD9D9D9),
+                                            ? const Color(0xFF2D9CED)
+                                            : const Color(0xFFD9D9D9),
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Text(
@@ -313,7 +304,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500,
                                           decorationColor: selectedType == '1'
-                                              ? Color(0xFF2D9CED)
+                                              ? const Color(0xFF2D9CED)
                                               : Colors.transparent,
                                           decorationThickness: 2,
                                         ),
@@ -327,9 +318,9 @@ class _CremationPayFormState extends State<CremationPayForm> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       alignment: Alignment.bottomCenter,
                       // height: (deviceHeight >= 500 && deviceHeight < 800)
                       //     ? 430
@@ -354,10 +345,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
           // width: double.infinity,
           // margin: EdgeInsets.only(top: 190.0, left: 15.0),
@@ -370,10 +361,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(height * 1 / 100),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage("assets/images/icon_bank.png"),
                         fit: BoxFit.contain,
                       ),
@@ -383,10 +374,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                   ),
                   Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: (width * 55) / 100,
                         // padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
+                        child: const Text(
                           '948-0-17901-0',
                           style: TextStyle(
                             fontSize: 20,
@@ -397,10 +388,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           maxLines: 2,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: (width * 55) / 100,
                         // padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
+                        child: const Text(
                           'ชื่อบัญชี : สภาทนายความ ในพระบรมราชูปถัมภ์ (การฌาปนกิจ) สะพานใหม่ ดอนเมือง',
                           style: TextStyle(
                             fontSize: 15,
@@ -411,10 +402,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           maxLines: 5,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: (width * 55) / 100,
                         // padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
+                        child: const Text(
                           'ธนาคาร ธ.กรุงเทพ',
                           style: TextStyle(
                             fontSize: 15,
@@ -425,9 +416,9 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           maxLines: 2,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       InkWell(
-                        onTap: () => _downloadQR(),
+                        onTap: () => _downloadQR(context),
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: height * 5 / 100,
@@ -438,7 +429,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                     ],
                   ),
                 ],
@@ -446,15 +437,15 @@ class _CremationPayFormState extends State<CremationPayForm> {
             ],
           ),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Form(
           key: _formKey,
           child: Container(
             // width: double.infinity,
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Color(0xFFFFFFFF),
+              color: const Color(0xFFFFFFFF),
             ),
             child: Column(
               children: [
@@ -471,19 +462,19 @@ class _CremationPayFormState extends State<CremationPayForm> {
                   isPattern: true,
                   textInputType: TextInputType.number,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 itemImage1['imageUrl'] != "" && itemImage1['imageUrl'] != null
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 25 / 100,
                             height: 160,
                             child: MaterialButton(
                               onPressed: () {
                                 _showPickerImage(context, '1');
                               },
-                              padding: EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
                               child: Image.network(
                                 itemImage1['imageUrl'],
                                 width: MediaQuery.of(context).size.width,
@@ -492,20 +483,18 @@ class _CremationPayFormState extends State<CremationPayForm> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 15),
+                          const SizedBox(width: 15),
                           InkWell(
                             onTap: () => _showPickerImage(context, '1'),
-                            child: Container(
-                              child: Text(
-                                'แก้ไขรูปภาพ',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF2D9CED),
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                            child: const Text(
+                              'แก้ไขรูปภาพ',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF2D9CED),
                               ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                           ),
                         ],
@@ -524,13 +513,13 @@ class _CremationPayFormState extends State<CremationPayForm> {
                       ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
-                  margin: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                  margin: const EdgeInsets.only(top: 15.0, bottom: 10.0),
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Material(
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(25.0),
-                      color: Color(0xFFF58A33),
+                      color: const Color(0xFFF58A33),
                       child: MaterialButton(
                         minWidth: MediaQuery.of(context).size.width,
                         height: 40,
@@ -541,9 +530,9 @@ class _CremationPayFormState extends State<CremationPayForm> {
                             _payConfirm();
                           } else {}
                         },
-                        child: new Text(
+                        child: const Text(
                           'ถัดไป',
-                          style: new TextStyle(
+                          style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
                             fontWeight: FontWeight.normal,
@@ -558,7 +547,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
             ),
           ),
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
       ],
     );
   }
@@ -570,30 +559,30 @@ class _CremationPayFormState extends State<CremationPayForm> {
       children: [
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
-          child: Text(
+          child: const Text(
               '1. ตรวจสอบยอดเงินสงเคราะห์ล่วงหน้า / ยอดเงินสงคราะห์คงเหลือ'),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
-          child: Text('2. เลือกวิธีการชำระเงินที่ท่านสะดวก มายังบัญชี'),
+          child: const Text('2. เลือกวิธีการชำระเงินที่ท่านสะดวก มายังบัญชี'),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
           // width: double.infinity,
           // margin: EdgeInsets.only(top: 190.0, left: 15.0),
@@ -606,10 +595,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(height * 1 / 100),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage("assets/images/icon_bank.png"),
                         fit: BoxFit.contain,
                       ),
@@ -619,10 +608,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                   ),
                   Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: (width * 55) / 100,
                         // padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
+                        child: const Text(
                           '948-0-17901-0',
                           style: TextStyle(
                             fontSize: 20,
@@ -633,10 +622,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           maxLines: 2,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: (width * 55) / 100,
                         // padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
+                        child: const Text(
                           'ชื่อบัญชี : สภาทนายความ ในพระบรมราชูปถัมภ์ (การฌาปนกิจ) สะพานใหม่ ดอนเมือง',
                           style: TextStyle(
                             fontSize: 15,
@@ -647,10 +636,10 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           maxLines: 5,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: (width * 55) / 100,
                         // padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                        child: Text(
+                        child: const Text(
                           'ธนาคาร ธ.กรุงเทพ',
                           style: TextStyle(
                             fontSize: 15,
@@ -661,7 +650,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           maxLines: 2,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Container(
                         alignment: Alignment.centerLeft,
                         height: height * 5 / 100,
@@ -671,7 +660,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                           fit: BoxFit.contain,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                     ],
                   ),
                 ],
@@ -679,44 +668,44 @@ class _CremationPayFormState extends State<CremationPayForm> {
             ],
           ),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
-          child: Text('3. เมื่อชำระเงินแล้ว ถ่ายรูปหลักฐานการชำระ'),
+          child: const Text('3. เมื่อชำระเงินแล้ว ถ่ายรูปหลักฐานการชำระ'),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
-          child: Text('4. แนบรูปภาพหลักฐานพร้อมกรอกยอดที่ท่านชำระมา'),
+          child: const Text('4. แนบรูปภาพหลักฐานพร้อมกรอกยอดที่ท่านชำระมา'),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
-          child: Text(
+          child: const Text(
               '5. กดปุ่ม "ถัดไป" ตรวจสอบข้อมความถูกต้อง ของท่าน และกด "ยืนยัน"'),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
           // width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
           child: Column(
             children: [
@@ -731,7 +720,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                 false,
                 false,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 alignment: Alignment.center,
                 height: height * 6 / 100,
@@ -744,20 +733,20 @@ class _CremationPayFormState extends State<CremationPayForm> {
 
               Container(
                 width: MediaQuery.of(context).size.width * 0.5,
-                margin: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                margin: const EdgeInsets.only(top: 15.0, bottom: 10.0),
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Material(
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(25.0),
-                    color: Color(0xFFF58A33),
+                    color: const Color(0xFFF58A33),
                     child: MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       height: 40,
                       onPressed: () {},
-                      child: new Text(
+                      child: const Text(
                         'ถัดไป',
-                        style: new TextStyle(
+                        style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.white,
                           fontWeight: FontWeight.normal,
@@ -771,18 +760,18 @@ class _CremationPayFormState extends State<CremationPayForm> {
             ],
           ),
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFFFFFFF),
+            color: const Color(0xFFFFFFFF),
           ),
-          child: Text(
+          child: const Text(
               '6. เสร็จสิ้น ระบบจะส่งข้อมูลให้เจ้าหน้าที่ทำการตรวจสอบต่อไปและจะแจ้งผลให้ท่านทราบภายใน 15 วันทำการหลังจากที่ได้รับข้อมูลแล้ว'),
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
       ],
     );
   }
@@ -805,7 +794,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
 
   _callRead() async {
     profileCode = (await storage.read(key: 'profileCode18'))!;
-    if (profileCode != '' && profileCode != null) {}
+    if (profileCode != '') {}
 
     setState(() {
       totalAmount = widget.model['totalAmount'];
@@ -820,6 +809,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
+        // ignore: deprecated_member_use
         return WillPopScope(
           onWillPop: () {
             return Future.value(false);
@@ -829,9 +819,9 @@ class _CremationPayFormState extends State<CremationPayForm> {
             content: Container(
               width: MediaQuery.of(context).size.height / 100 * 30,
               height: 160,
-              decoration: new BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: const Color(0xFFFFFF),
+                color: Color(0x00ffffff),
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -840,23 +830,23 @@ class _CremationPayFormState extends State<CremationPayForm> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Color(0xFFED6B2D),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       subTitle1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontFamily: 'Kanit',
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -865,7 +855,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
                             Navigator.pop(context);
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             width:
                                 MediaQuery.of(context).size.height / 100 * 14,
 
@@ -874,9 +864,9 @@ class _CremationPayFormState extends State<CremationPayForm> {
                             // margin: EdgeInsets.only(top: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(17.5),
-                              color: Color(0xFFED6B2D),
+                              color: const Color(0xFFED6B2D),
                             ),
-                            child: Text(
+                            child: const Text(
                               'ตกลง',
                               style: TextStyle(
                                 fontSize: 17,
@@ -905,41 +895,39 @@ class _CremationPayFormState extends State<CremationPayForm> {
       context: context,
       builder: (BuildContext bc) {
         return SafeArea(
-          child: Container(
-            child: new Wrap(
-              children: <Widget>[
-                new ListTile(
-                  leading: new Icon(Icons.photo_library),
-                  title: new Text(
-                    'อัลบั้มรูปภาพ',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: 'Kanit',
-                      fontWeight: FontWeight.normal,
-                    ),
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text(
+                  'อัลบั้มรูปภาพ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontFamily: 'Kanit',
+                    fontWeight: FontWeight.normal,
                   ),
-                  onTap: () {
-                    _imgFromGallery(type);
-                    Navigator.of(context).pop();
-                  },
                 ),
-                new ListTile(
-                  leading: new Icon(Icons.photo_camera),
-                  title: new Text(
-                    'กล้องถ่ายรูป',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: 'Kanit',
-                      fontWeight: FontWeight.normal,
-                    ),
+                onTap: () {
+                  _imgFromGallery(type);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text(
+                  'กล้องถ่ายรูป',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontFamily: 'Kanit',
+                    fontWeight: FontWeight.normal,
                   ),
-                  onTap: () {
-                    _imgFromCamera(type);
-                    Navigator.of(context).pop();
-                  },
                 ),
-              ],
-            ),
+                onTap: () {
+                  _imgFromCamera(type);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         );
       },
@@ -969,8 +957,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
   }
 
   void _upload(String type) async {
-    if (_image == null) return;
-    Random random = new Random();
+    Random random = Random();
     uploadImageX(_image).then((res) {
       setState(() {
         if (type == "1") {
@@ -993,8 +980,8 @@ class _CremationPayFormState extends State<CremationPayForm> {
   dialogDeleteImage(String code) async {
     showDialog(
       context: context,
-      builder: (BuildContext context) => new CupertinoAlertDialog(
-        title: new Text(
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text(
           'ต้องการลบรูปภาพ ใช่ไหม',
           style: TextStyle(
             fontSize: 16,
@@ -1003,11 +990,11 @@ class _CremationPayFormState extends State<CremationPayForm> {
             fontWeight: FontWeight.normal,
           ),
         ),
-        content: new Text(''),
+        content: const Text(''),
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
-            child: new Text(
+            child: const Text(
               "ยกเลิก",
               style: TextStyle(
                 fontSize: 13,
@@ -1022,7 +1009,7 @@ class _CremationPayFormState extends State<CremationPayForm> {
           ),
           CupertinoDialogAction(
             isDefaultAction: true,
-            child: new Text(
+            child: const Text(
               "ลบ",
               style: TextStyle(
                 fontSize: 13,
@@ -1073,21 +1060,53 @@ class _CremationPayFormState extends State<CremationPayForm> {
   late String imageData;
   bool dataLoaded = false;
 
-  _downloadQR() async {
+  // _downloadQR() async {
+  //   var _url =
+  //       "https://lc.we-builds.com/lc-document/images/news/009c0b2e-2ea9-4ce6-9ee9-b1d89e5cfb4b/S__54231044.jpg";
+
+  //   var response = await Dio()
+  //       .get(_url, options: Options(responseType: ResponseType.bytes));
+  //   final result = await ImageGallerySaver.saveImage(
+  //       Uint8List.fromList(response.data),
+  //       quality: 100,
+  //       name: "_imageQR");
+
+  //   if (result['isSuccess'] == true) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('ดาวน์โหลดรูปภาพเรียบร้อย'),
+  //       ),
+  //     );
+  //   }
+  // }
+  Future<void> _downloadQR(BuildContext context) async {
     var _url =
         "https://lc.we-builds.com/lc-document/images/news/009c0b2e-2ea9-4ce6-9ee9-b1d89e5cfb4b/S__54231044.jpg";
 
-    var response = await Dio()
-        .get(_url, options: Options(responseType: ResponseType.bytes));
-    final result = await ImageGallerySaver.saveImage(
-        Uint8List.fromList(response.data),
-        quality: 100,
-        name: "_imageQR");
+    try {
+      var response = await Dio().get(
+        _url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      print('Image fetched successfully');
 
-    if (result['isSuccess'] == true) {
+      // บันทึกรูปภาพไปยังแกลเลอรี
+      await FlutterImageGallerySaver
+          .saveImage(Uint8List.fromList(response.data));
+
+      // แสดง SnackBar แจ้งเตือน
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('ดาวน์โหลดรูปภาพเรียบร้อย'),
+        ),
+      );
+    } catch (e) {
+      print('Error downloading image: $e');
+
+      // แจ้งเตือนว่าบันทึกไม่สำเร็จ
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('เกิดข้อผิดพลาดในการดาวน์โหลด'),
         ),
       );
     }
