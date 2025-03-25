@@ -20,7 +20,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
   Intl.defaultLocale = 'th';
   initializeDateFormatting();
 

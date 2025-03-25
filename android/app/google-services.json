@@ -1,0 +1,87 @@
+{
+  "project_info": {
+    "project_number": "437369133109",
+    "project_id": "lc-on-mobile",
+    "storage_bucket": "lc-on-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437369133109:android:02e3e3f9a8bb1e5e7c397c",
+        "android_client_info": {
+          "package_name": "td.webuild.lc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437369133109-5ov6omqsemt005b82408lccst4t3e03b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.lc",
+            "certificate_hash": "f5f72d65d69ba741bf881bf00b14797247a77392"
+          }
+        },
+        {
+          "client_id": "437369133109-61a6ah3shbkrheqm1c8glukscoc0kbbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.lc",
+            "certificate_hash": "feb7f6fecc08344b4abfc2ae4c07a7e6b41bcc24"
+          }
+        },
+        
+        {
+          "client_id": "437369133109-7jt0eeouo450d4nh54ubf84tu1kojaml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.lc",
+            "certificate_hash": "1aad0df6314675a3ce34e358828ef1fb6e82c013"
+          }
+        },
+        {
+          "client_id": "437369133109-7mqm36m2ef7254kvvqthebe15umguqgg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.lc",
+            "certificate_hash": "5a3b9c9a59022654e85376a92af2b198904ea6a6"
+          }
+        },
+        {
+          "client_id": "437369133109-dgv1alf1kgr1l5cqd5mqi6iv2he2bq70.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.lc",
+            "certificate_hash": "922ee16433eb17105e691c027d98efe707caf9a5"
+          }
+        },
+        {
+          "client_id": "437369133109-1gp0nnbva538vt5lrtgfk1pgcpuuc8q4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmy8Tn3HwC3kmmLu2NAvOyylA-cPJwGV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437369133109-1gp0nnbva538vt5lrtgfk1pgcpuuc8q4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "437369133109-dirkj8pq7pj2jrkcte8t9stt2aaovr4u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "td.webuild.lc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
