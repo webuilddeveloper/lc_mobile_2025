@@ -36,7 +36,7 @@ class _PrivilegeDetailPageStateV3 extends State<PrivilegeFormV3> {
 
   final storage = new FlutterSecureStorage();
   String profileCode = '';
-  late Future<dynamic> _futureModel;
+  late Future<dynamic> _futureModel = Future.value();
   late Future<dynamic> _futureRotation;
   // String _urlShared = '';
   String code;

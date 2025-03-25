@@ -47,9 +47,9 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
     {'code': '2', 'title': 'Mrs.'},
     {'code': '3', 'title': 'Miss'}
   ];
-  late String _selectedPrefix;
+  late String _selectedPrefix = '';
   late String _selectedNewPrefix;
-  late String _selectedPrefixEN;
+  late String _selectedPrefixEN = '';
 
   int selectLcType = 1;
   String lcTypeName = "สองปี";
@@ -100,17 +100,17 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
   dynamic itemImageSign = {"imageUrl": "", "id": "", "imageType": ""};
 
   List<dynamic> _itemProvince = [];
-  late String _selectedProvince;
+  late String _selectedProvince = '';
   List<dynamic> _itemDistrict = [];
   late String _selectedDistrict;
   List<dynamic> _itemSubDistrict = [];
-  late String _selectedSubDistrict;
+  late String _selectedSubDistrict = '';
   List<dynamic> _itemPostalCode = [];
-  late String _selectedPostalCode;
+  late String _selectedPostalCode = '';
 
   Color selectedColor = const Color(0xFF758C29);
 
-  late String profileCode;
+  late String profileCode = '';
   dynamic _model;
   late Future<dynamic> _futureProfile;
 
@@ -166,75 +166,77 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
           // ),
           const SizedBox(height: 25),
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFFFFF),
-              borderRadius: BorderRadius.circular(28.5),
-              border: Border.all(
-                color: _hasErrorPrefix
-                    ? Colors.red
-                    : const Color(0xFF758C29).withOpacity(0.7),
-                width: 1.5,
-              ),
-            ),
-            child: DropdownButtonFormField(
-              decoration: const InputDecoration(
-                errorStyle: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Kanit',
-                  fontSize: 10.0,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.circular(28.5),
+                border: Border.all(
+                  color: _hasErrorPrefix
+                      ? Colors.red
+                      : const Color(0xFF758C29).withOpacity(0.7),
+                  width: 1.5,
                 ),
-                border: InputBorder.none,
               ),
-              validator: (value) {
-                if (value == '' || value == null) {
+              child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  errorStyle: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Kanit',
+                    fontSize: 10.0,
+                  ),
+                  border: InputBorder.none,
+                ),
+                validator: (value) {
+                  if (value == '' || value == null) {
+                    setState(() {
+                      _hasErrorPrefix = true;
+                    });
+                    return null;
+                  } else {
+                    setState(() {
+                      _hasErrorPrefix = false;
+                    });
+                    return null;
+                  }
+                },
+                value:
+                    _itemPrefix.any((item) => item['title'] == _selectedPrefix)
+                        ? _selectedPrefix
+                        : null,
+                hint: const Text(
+                  'คำนำหน้า',
+                  style: TextStyle(
+                    fontSize: 14.00,
+                    fontFamily: 'Kanit',
+                    color: Color(0xFF758C29),
+                  ),
+                ),
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  TextEditingController().clear();
+                },
+                onChanged: (newValue) {
                   setState(() {
-                    _hasErrorPrefix = true;
-                  });
-                  return null;
-                } else {
-                  setState(() {
+                    _selectedPrefix = newValue as String;
                     _hasErrorPrefix = false;
                   });
-                  return null;
-                }
-              },
-              value: _selectedPrefix,
-              hint: const Text(
-                'คำนำหน้า',
-                style: TextStyle(
-                  fontSize: 14.00,
-                  fontFamily: 'Kanit',
-                  color: Color(0xFF758C29),
-                ),
-              ),
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                TextEditingController().clear();
-              },
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedPrefix = newValue as String;
-                  _hasErrorPrefix = false;
-                });
-              },
-              items: _itemPrefix.map((item) {
-                return DropdownMenuItem(
-                  value: item['title'],
-                  child: Text(
-                    item['title'],
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontFamily: 'Kanit',
-                      color: Color(0xFF758C29),
+                },
+                items: _itemPrefix.map((item) {
+                  return DropdownMenuItem(
+                    value: item['title'],
+                    child: Text(
+                      item['title'],
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontFamily: 'Kanit',
+                        color: Color(0xFF758C29),
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
+                  );
+                }).toList(),
+              )),
           if (_hasErrorPrefix)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
@@ -303,75 +305,77 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
           ),
           const SizedBox(height: 15),
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFFFFF),
-              borderRadius: BorderRadius.circular(28.5),
-              border: Border.all(
-                color: _hasErrorPrefixEN
-                    ? Colors.red
-                    : const Color(0xFF758C29).withOpacity(0.7),
-                width: 1.5,
-              ),
-            ),
-            child: DropdownButtonFormField(
-              decoration: const InputDecoration(
-                errorStyle: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontFamily: 'Kanit',
-                  fontSize: 10.0,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.circular(28.5),
+                border: Border.all(
+                  color: _hasErrorPrefixEN
+                      ? Colors.red
+                      : const Color(0xFF758C29).withOpacity(0.7),
+                  width: 1.5,
                 ),
-                border: InputBorder.none,
               ),
-              validator: (value) {
-                if (value == '' || value == null) {
+              child: DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  errorStyle: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Kanit',
+                    fontSize: 10.0,
+                  ),
+                  border: InputBorder.none,
+                ),
+                validator: (value) {
+                  if (value == '' || value == null) {
+                    setState(() {
+                      _hasErrorPrefixEN = true;
+                    });
+                    return null;
+                  } else {
+                    setState(() {
+                      _hasErrorPrefixEN = false;
+                    });
+                    return null;
+                  }
+                },
+                value: _itemPrefixEN
+                        .any((item) => item['code'] == _selectedPrefixEN)
+                    ? _selectedPrefixEN
+                    : null,
+                hint: const Text(
+                  'คำนำหน้า',
+                  style: TextStyle(
+                    fontSize: 14.00,
+                    fontFamily: 'Kanit',
+                    color: Color(0xFF758C29),
+                  ),
+                ),
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  TextEditingController().clear();
+                },
+                onChanged: (newValue) {
                   setState(() {
-                    _hasErrorPrefixEN = true;
-                  });
-                  return null;
-                } else {
-                  setState(() {
+                    _selectedPrefixEN = newValue as String;
                     _hasErrorPrefixEN = false;
                   });
-                  return null;
-                }
-              },
-              value: _selectedPrefixEN,
-              hint: const Text(
-                'คำนำหน้า',
-                style: TextStyle(
-                  fontSize: 14.00,
-                  fontFamily: 'Kanit',
-                  color: Color(0xFF758C29),
-                ),
-              ),
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                TextEditingController().clear();
-              },
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedPrefixEN = newValue as String;
-                  _hasErrorPrefixEN = false;
-                });
-              },
-              items: _itemPrefixEN.map((item) {
-                return DropdownMenuItem(
-                  value: item['code'],
-                  child: Text(
-                    item['title'],
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontFamily: 'Kanit',
-                      color: Color(0xFF758C29),
+                },
+                items: _itemPrefixEN.map((item) {
+                  return DropdownMenuItem(
+                    value: item['code'],
+                    child: Text(
+                      item['title'],
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontFamily: 'Kanit',
+                        color: Color(0xFF758C29),
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
+                  );
+                }).toList(),
+              )),
           if (_hasErrorPrefixEN)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
@@ -662,7 +666,10 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
                             color: Color(0xFF758C29),
                           ),
                         ),
-                        value: _selectedProvince,
+                        value: _itemProvince.any(
+                                (item) => item['code'] == _selectedProvince)
+                            ? _selectedProvince
+                            : null,
                         onTap: () {
                           FocusScope.of(context).unfocus();
                           TextEditingController().clear();
@@ -1778,7 +1785,8 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
         context,
         MaterialPageRoute(
           builder: (context) => const NsaReportPayForm(
-            type: 'reportRegister', title: '',
+            type: 'reportRegister',
+            title: '',
           ),
         ),
       );
@@ -1789,7 +1797,8 @@ class _NsaReportRegisterPageState extends State<NsaReportRegisterPage> {
           context,
           MaterialPageRoute(
             builder: (context) => const NsaReportPayForm(
-              type: 'reportRegister', title: '',
+              type: 'reportRegister',
+              title: '',
             ),
           ),
         );

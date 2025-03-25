@@ -135,7 +135,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
       RefreshController(initialRefresh: false);
 
   // late StreamSubscription<Map> _notificationSubscription;
-  late StreamSubscription _notificationSubscription =
+  late final StreamSubscription _notificationSubscription =
       const Stream.empty().listen((event) {});
 
   List<dynamic> mockBannerList = [];
@@ -1350,17 +1350,16 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
       idcard = profile['idcard'] != '' ? profile['idcard'] : '';
       ocategory = profile['ocategory'];
       userData = User(
-        username: data['username'] != '' ? data['username'] : '',
-        password: data['password'] != '' ? data['password'].toString() : '',
-        firstName: data['firstName'] != '' ? data['firstName'] : '',
-        lastName: data['lastName'] != '' ? data['lastName'] : '',
-        imageUrl: data['imageUrl'] != '' ? data['imageUrl'] : '',
-        category: data['category'] != '' ? data['category'] : '',
-        countUnit: data['countUnit'] != '' ? data['countUnit'] : '',
-        address: data['address'] != '' ? data['address'] : '',
-        status: data['status'] != '' ? data['status'] : '',
-        idcard: data['idcard'] != '' ? data['idcard'] : '',
-      );
+          username: data['username'] != '' ? data['username'] : '',
+          password: data['password'] != '' ? data['password'].toString() : '',
+          firstName: data['firstName'] != '' ? data['firstName'] : '',
+          lastName: data['lastName'] != '' ? data['lastName'] : '',
+          imageUrl: data['imageUrl'] != '' ? data['imageUrl'] : '',
+          category: data['category'] != '' ? data['category'] : '',
+          countUnit: data['countUnit'] != '' ? data['countUnit'] : '',
+          address: data['address'] ?? '',
+          status: data['status'] ?? '',
+          idcard: data['idcard'] ?? '');
     });
 
     if (value != '' && value != null) {

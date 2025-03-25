@@ -1,3 +1,6 @@
+
+// ignore_for_file: unnecessary_null_comparison, file_names, duplicate_ignore
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';

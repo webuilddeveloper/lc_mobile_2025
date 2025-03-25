@@ -127,7 +127,7 @@ class _ListContentHorizontalPrivilegeV3
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.5),
                             color: Color(0xFF8AD2FF).withOpacity(.25)),
-                        child: Text(
+                        child: const Text(
                           'ดูทั้งหมด',
                           style: TextStyle(
                               fontSize: 12.0,

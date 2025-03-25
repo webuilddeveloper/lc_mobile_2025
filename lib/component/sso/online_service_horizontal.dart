@@ -5,7 +5,8 @@ import 'package:lc/shared/api_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SSOOnlineServiceHorizontal extends StatefulWidget {
-  const SSOOnlineServiceHorizontal({super.key, required this.title, this.model});
+  const SSOOnlineServiceHorizontal(
+      {super.key, required this.title, this.model});
 
   final String title;
   final dynamic model;

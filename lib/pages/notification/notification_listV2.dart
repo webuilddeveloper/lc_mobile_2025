@@ -183,7 +183,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       case 'eventPage':
         {
@@ -200,7 +199,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       case 'privilegePage':
         {
@@ -214,7 +212,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       case 'knowledgePage':
         {
@@ -228,7 +225,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       case 'poiPage':
         {
@@ -245,7 +241,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       case 'pollPage':
         {
@@ -259,7 +254,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       // case 'warningPage':
       //   {
@@ -273,7 +267,7 @@ class _NotificationListV2 extends State<NotificationListV2>
       //       ),
       //     ).then((value) => {_loading()});
       //   }
-      //   
+      //
 
       case 'welfarePage':
         {
@@ -287,7 +281,6 @@ class _NotificationListV2 extends State<NotificationListV2>
             ),
           ).then((value) => {_loading()});
         }
-        
 
       case 'mainPage':
         {
@@ -428,7 +421,8 @@ class _NotificationListV2 extends State<NotificationListV2>
                                       child: ListView(
                                         // shrinkWrap: true,
                                         controller: _controller,
-                                        physics: const ClampingScrollPhysics(), // 2nd
+                                        physics:
+                                            const ClampingScrollPhysics(), // 2nd
                                         children: <Widget>[
                                           for (int i = 0;
                                               i < listCategoryDays.length;
@@ -449,8 +443,8 @@ class _NotificationListV2 extends State<NotificationListV2>
                                                 const ClampingScrollPhysics(), // 2nd
                                             children: <Widget>[
                                               Container(
-                                                margin:
-                                                    const EdgeInsets.only(left: 30),
+                                                margin: const EdgeInsets.only(
+                                                    left: 30),
                                                 child: Text(
                                                   selectedCategoryDaysName,
                                                   style: const TextStyle(
@@ -930,8 +924,9 @@ class _NotificationListV2 extends State<NotificationListV2>
                     unSelectall();
                     chkListCount = listData.isNotEmpty ? true : false;
                     chkListActive = listData
-                                .where((x) => x['status'] != "A")
-                                .toList().isNotEmpty
+                            .where((x) => x['status'] != "A")
+                            .toList()
+                            .isNotEmpty
                         ? true
                         : false;
 
@@ -1013,8 +1008,9 @@ class _NotificationListV2 extends State<NotificationListV2>
                         .toList();
                     chkListCount = listResultData.isNotEmpty ? true : false;
                     chkListActive = listResultData
-                                .where((x) => x['status'] != "A")
-                                .toList().isNotEmpty
+                            .where((x) => x['status'] != "A")
+                            .toList()
+                            .isNotEmpty
                         ? true
                         : false;
 
@@ -1055,8 +1051,9 @@ class _NotificationListV2 extends State<NotificationListV2>
                         .toList();
                     chkListCount = listResultData.isNotEmpty ? true : false;
                     chkListActive = listResultData
-                                .where((x) => x['status'] != "A")
-                                .toList().isNotEmpty
+                            .where((x) => x['status'] != "A")
+                            .toList()
+                            .isNotEmpty
                         ? true
                         : false;
 
@@ -1098,8 +1095,9 @@ class _NotificationListV2 extends State<NotificationListV2>
                         .toList();
                     chkListCount = listResultData.isNotEmpty ? true : false;
                     chkListActive = listResultData
-                                .where((x) => x['status'] != "A")
-                                .toList().isNotEmpty
+                            .where((x) => x['status'] != "A")
+                            .toList()
+                            .isNotEmpty
                         ? true
                         : false;
                     Navigator.pop(context);
@@ -1140,8 +1138,9 @@ class _NotificationListV2 extends State<NotificationListV2>
                         .toList();
                     chkListCount = listResultData.isNotEmpty ? true : false;
                     chkListActive = listResultData
-                                .where((x) => x['status'] != "A")
-                                .toList().isNotEmpty
+                            .where((x) => x['status'] != "A")
+                            .toList()
+                            .isNotEmpty
                         ? true
                         : false;
                     Navigator.pop(context);
@@ -1254,7 +1253,8 @@ class _NotificationListV2 extends State<NotificationListV2>
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              side: const BorderSide(color: Color(0xFFB7B7B7))))),
+                              side:
+                                  const BorderSide(color: Color(0xFFB7B7B7))))),
                   child: const Text(
                     "ยกเลิก",
                     style: TextStyle(
@@ -1413,7 +1413,8 @@ class _NotificationListV2 extends State<NotificationListV2>
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              side: const BorderSide(color: Color(0xFFB7B7B7))))),
+                              side:
+                                  const BorderSide(color: Color(0xFFB7B7B7))))),
                   child: const Text(
                     "",
                     style: TextStyle(
@@ -1580,36 +1581,31 @@ class _NotificationListV2 extends State<NotificationListV2>
         {
           return "ท่านไม่มีข้อมูลการแจ้งเตือนสำหรับวันนี้";
         }
-        
 
       case '2':
         {
           return "ท่านไม่มีข้อมูลการแจ้งเตือนสำหรับเมื่อวาน";
         }
-        
 
       case '3':
         {
           return "ท่านไม่มีข้อมูลการแจ้งเตือนเมื่อ 7 วันก่อน";
         }
-        
 
       case '4':
         {
           return "ท่านไม่มีข้อมูลการแจ้งเตือนที่เก่ากว่า 7 วัน";
         }
-        
+
       case '5':
         {
           return "ท่านไม่มีข้อมูลการแจ้งเตือนที่ยังไม่อ่าน";
         }
-        
 
       default:
         {
           return "";
         }
-        
     }
   }
 }
@@ -1622,31 +1618,26 @@ textDialogDelete(
       {
         return "ลบรายการทั้งหมดของวันนี้ออกจากการแจ้งเตือนใช่หรือไม่";
       }
-      
 
     case '2':
       {
         return "ลบรายการทั้งหมดของเมื่อวานออกจากการแจ้งเตือนใช่หรือไม่";
       }
-      
 
     case '3':
       {
         return "ลบรายการทั้งหมดของเมื่อ 7 วันก่อนออกจากการแจ้งเตือนใช่หรือไม่";
       }
-      
 
     case '4':
       {
         return "ลบรายการทั้งหมดที่เก่ากว่า 7 วันก่อนออกจากการแจ้งเตือนใช่หรือไม่";
       }
-      
 
     default:
       {
         return "ลบรายการทั้งหมด ออกจากแจ้งเตือนใช่หรือไม่";
       }
-      
   }
 }
 
@@ -1658,30 +1649,25 @@ textDialogUpdate(
       {
         return "เปลี่ยนรายการทั้งหมดของวันนี้เป็นอ่านแล้วใช่หรือไม่";
       }
-      
 
     case '2':
       {
         return "เปลี่ยนรายการทั้งหมดของเมื่อวานเป็นอ่านแล้วใช่หรือไม่";
       }
-      
 
     case '3':
       {
         return "เปลี่ยนรายการทั้งหมดของเมื่อ 7 วันก่อนเป็นอ่านแล้วใช่หรือไม่";
       }
-      
 
     case '4':
       {
         return "เปลี่ยนรายการทั้งหมดที่เก่ากว่า 7 วันก่อนเป็นอ่านแล้วใช่หรือไม่";
       }
-      
 
     default:
       {
         return "เปลี่ยนรายการทั้งหมด เป็นอ่านแล้วใช่หรือไม่";
       }
-      
   }
 }

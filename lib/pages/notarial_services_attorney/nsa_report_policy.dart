@@ -280,7 +280,9 @@ class _NsaReportPolicyState extends State<NsaReportPolicy> {
                               child: Container(
                                 alignment: Alignment.topLeft,
                                 child: Html(
-                                  data: model['description'],
+                                  data: model is Map<String, dynamic>
+                                      ? model['description']?.toString() ?? ''
+                                      : '',
                                   onLinkTap: (String? url,
                                       Map<String, String> attributes, element) {
                                     launch(url!);

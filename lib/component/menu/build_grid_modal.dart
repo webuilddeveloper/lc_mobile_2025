@@ -122,7 +122,10 @@ class BuildGridModalState extends State<BuildGridModal> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BuildTeacherIndex(menuModel: null, model: null,),
+                            builder: (context) => BuildTeacherIndex(
+                              menuModel: null,
+                              model: null,
+                            ),
                           ),
                         );
                       },
@@ -358,7 +361,8 @@ class BuildGridModalState extends State<BuildGridModal> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PrivilegeMain(
-                    title: title, fromPolicy: null,
+                    title: title,
+                    fromPolicy: null,
                   ),
                 ),
               );
