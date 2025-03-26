@@ -76,16 +76,24 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   permission_handler: ^11.4.0
   flutter_image_gallery_saver: ^0.0.2
+  flutter_launcher_icons: ^0.14.3
 
-  
+ 
 
-
+ 
 
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true  # เปลี่ยนเป็น true หรือชื่อแพ็คเกจ
+  ios: true
+  image_path: "assets/icon.png"  # ตรงกับเส้นทางที่คุณระบุ
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

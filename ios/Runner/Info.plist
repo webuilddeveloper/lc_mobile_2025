@@ -13,7 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>lc</string>
+	<string>สภาทนายความ On Mobile</string>
+	<key>CFBundleDisplayName</key>
+	<string>สภาทนายความ On Mobile</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
