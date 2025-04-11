@@ -347,12 +347,14 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
                   color: const Color(0x99FFFFFF),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 5.0,
-                    sigmaY: 5.0,
-                  ),
-                  child: Column(
+                child: 
+                // BackdropFilter(
+                //   filter: ImageFilter.blur(
+                //     sigmaX: 5.0,
+                //     sigmaY: 5.0,
+                //   ),
+                //   child: 
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -372,7 +374,8 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                ),
+                
+                // ),
               ),
             ),
           )

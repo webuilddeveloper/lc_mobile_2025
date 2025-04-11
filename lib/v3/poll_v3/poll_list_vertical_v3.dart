@@ -274,12 +274,7 @@ class _PollListVerticalV3 extends State<PollListVerticalV3> {
                   color: Color(0x99FFFFFF),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 5.0,
-                    sigmaY: 5.0,
-                  ),
-                  child: Column(
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -299,7 +294,33 @@ class _PollListVerticalV3 extends State<PollListVerticalV3> {
                       ),
                     ],
                   ),
-                ),
+                // BackdropFilter(
+                //   filter: ImageFilter.blur(
+                //     sigmaX: 5.0,
+                //     sigmaY: 5.0,
+                //   ),
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text(
+                //         '${model['title']}',
+                //         style: TextStyle(
+                //           fontSize: 15,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //         maxLines: 2,
+                //         overflow: TextOverflow.ellipsis,
+                //       ),
+                //       Text(
+                //         '${model['createDate']}' != null
+                //             ? dateStringToDate('${model['createDate']}')
+                //             : '',
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              
               ),
             ),
           )

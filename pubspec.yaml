@@ -56,7 +56,7 @@ dependencies:
   flutter_app_badge: ^2.0.2
   geocoding: ^3.0.0
   geolocator: ^13.0.2
-  google_maps_flutter: ^2.10.1
+  google_maps_flutter: ^2.12.1
   pull_to_refresh: ^2.0.0
   fluttertoast: ^8.2.12
   table_calendar: ^3.2.0

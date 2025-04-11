@@ -82,11 +82,15 @@ class _PollListV3 extends State<PollListV3> with TickerProviderStateMixin {
       url: '${service.pollApi}read',
       urlGallery: service.pollGalleryApi,
       titleHome: widget.title,
-      callBack: () => {_onLoading()}, title: '', urlComment: '',
+      // callBack: () => {
+      //   // _onLoading()
+      //   null
+      // }, 
+      title: '', urlComment: '',
     );
   }
 
-  void goBack() async {
+  goBack() async {
     Navigator.pop(context);
     // Navigator.of(context).popUntil((route) => route.isFirst);
     // Navigator.of(context).push(

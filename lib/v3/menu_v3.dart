@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_badge/flutter_app_badge.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geocoding/geocoding.dart';
@@ -70,12 +71,12 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   }
 
   final storage = const FlutterSecureStorage();
-  late DateTime currentBackPressTime;
+  DateTime? currentBackPressTime = DateTime(0);
 
   // Profile profile = new Profile(model: Future.value({}));
   // Profile profile;
 
-  late Future<dynamic> _futureProfile = Future.value();
+  Future<dynamic> _futureProfile = Future.value();
   late Future<dynamic> _futureOrganizationImage;
   late Future<dynamic> _futureNews;
   late Future<dynamic> _futureAboutUs;
@@ -141,8 +142,11 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   List<dynamic> mockBannerList = [];
   int _currentBanner = 1;
 
+  bool? canPop = false;
+
   @override
   void initState() {
+    // canPop = false;
     _callRead();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -167,8 +171,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
         totalnorti: nortiCount,
         callback: _readNoti,
       ),
-      body: WillPopScope(
-        onWillPop: confirmExit,
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (value, result) => confirmExit(),
         child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (OverscrollIndicatorNotification overScroll) {
             overScroll.disallowIndicator();
@@ -1776,10 +1781,10 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
     }
   }
 
-  Future<bool> confirmExit() {
+  confirmExit() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       toastFail(
         context,
@@ -1787,9 +1792,9 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
         color: Colors.black,
         fontColor: Colors.white,
       );
-      return Future.value(false);
+    } else {
+      SystemNavigator.pop();
     }
-    return Future.value(true);
   }
 
   Future<Null> _callReadPolicyPrivilegeAtoZ(code) async {

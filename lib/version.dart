@@ -32,7 +32,7 @@ class _VersionPageState extends State<VersionPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return Future.value(false);
+        return Future.value(true);
       },
       child: Scaffold(
         backgroundColor: Colors.white,

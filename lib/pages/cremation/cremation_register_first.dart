@@ -30,7 +30,7 @@ class _CremationRegisterFirstFormState
     double deviceHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () {
-        return Future.value(false);
+        return Future.value(true);
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,

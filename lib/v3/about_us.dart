@@ -178,7 +178,9 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: ClipRRect(
+                      child: 
+                      // Text(lat.toString())
+                      ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: googleMap(lat, lng),
                       ),
@@ -200,7 +202,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                           child: MaterialButton(
                             minWidth: MediaQuery.of(context).size.width,
                             onPressed: () {
-                              launchURLMap(lat.toString(), lng.toString());
+                              // launchURLMap(lat.toString(), lng.toString());
                             },
                             child: const Text(
                               'ตำแหน่ง Google Map',

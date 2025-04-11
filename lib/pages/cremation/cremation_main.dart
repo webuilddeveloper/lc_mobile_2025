@@ -53,7 +53,7 @@ class _CremationMainFormState extends State<CremationMainForm> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return Future.value(false);
+        return Future.value(true);
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -519,13 +519,20 @@ class _CremationMainFormState extends State<CremationMainForm> {
     var modelRegister = await _futureCremationRegister;
     // logWTF(modelRegister);
     if (modelRegister.length <= 0) {
-      Navigator.of(context).pushAndRemoveUntil(
+      // Navigator.of(context).pushAndRemoveUntil(
+      //   MaterialPageRoute(
+      //     builder: (context) => const CremationRegisterFirstForm(
+      //       title: '',
+      //     ),
+      //   ),
+      //   (Route<dynamic> route) => false,
+      // );
+      Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const CremationRegisterFirstForm(
             title: '',
           ),
         ),
-        (Route<dynamic> route) => false,
       );
     }
 
