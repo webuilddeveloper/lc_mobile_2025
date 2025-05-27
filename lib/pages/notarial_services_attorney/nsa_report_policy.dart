@@ -85,12 +85,12 @@ class _NsaReportPolicyState extends State<NsaReportPolicy> {
                 child: SingleChildScrollView(
                   child: Container(
                     alignment: Alignment.bottomCenter,
-                    // height:  MediaQuery.of(context).size.height * .650,
-                    height: (deviceHeight >= 500 && deviceHeight < 800)
-                        ? 490
-                        : (deviceHeight >= 800)
-                            ? 590
-                            : deviceHeight * 0.2,
+                    height:  MediaQuery.of(context).size.height * 0.650,
+                    // height: (deviceHeight >= 500 && deviceHeight < 800)
+                    //     ? 490
+                    //     : (deviceHeight >= 800)
+                    //         ? 970
+                    //         : deviceHeight * 0.2,
                     padding:
                         const EdgeInsets.only(top: 20, left: 20, right: 20),
                     decoration: const BoxDecoration(
@@ -280,9 +280,7 @@ class _NsaReportPolicyState extends State<NsaReportPolicy> {
                               child: Container(
                                 alignment: Alignment.topLeft,
                                 child: Html(
-                                  data: model is Map<String, dynamic>
-                                      ? model['description']?.toString() ?? ''
-                                      : '',
+                                  data: model[index]['description']?.toString() ?? '',
                                   onLinkTap: (String? url,
                                       Map<String, String> attributes, element) {
                                     launch(url!);

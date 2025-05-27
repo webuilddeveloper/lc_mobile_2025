@@ -282,7 +282,7 @@ class _PolicyV2Page extends State<PolicyV2Page> {
                 Container(
                   alignment: Alignment.topLeft,
                   child: Html(
-                    data: model['description'],
+                    data: model[index]['description'],
                     onLinkTap:
                         (String? url, Map<String, String> attributes, element) {
                       launch(url!);
@@ -290,40 +290,6 @@ class _PolicyV2Page extends State<PolicyV2Page> {
                     },
                   ),
                 ),
-                // Container(
-                //   height: height * 0.4,
-                //   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                //   child: Scrollbar(
-                //     child: SingleChildScrollView(
-                //       physics: ClampingScrollPhysics(),
-                //       controller: scrollController,
-                //       child: Container(
-                //         alignment: Alignment.topLeft,
-                //         child: new Html(
-                //           data: model[index]['description'],
-                //           onLinkTap: (String url, RenderContext context,
-                //               Map<String, String> attributes, element) {
-                //             launch(url);
-                //             //open URL in webview, or launch URL in browser, or any other logic here
-                //           },
-                //         ),
-
-                //         // HtmlView(
-                //         //   data: model[index]['description'],
-                //         //   scrollable:
-                //         //       false, //false to use MarksownBody and true to use Marksown
-                //         // ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // _buildButton(
-                //   acceptPolicyList[index]['isActive'] ? 'ยอมรับ' : 'ไม่ยอมรับ',
-                //   acceptPolicyList[index]['isActive']
-                //       ? Theme.of(context).primaryColor
-                //       : Color(0xFF707070),
-                //   corrected: true,
-                // ),
                 SizedBox(height: 20)
               ],
             ),

@@ -14,6 +14,7 @@ header(
   bool? isButtonRight,
   Future<void> Function()? rightButton,
   String? menu,
+  Color? color,
 }) {
   return AppBar(
     flexibleSpace: Container(
@@ -42,10 +43,11 @@ header(
     title: isCenter
         ? Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               fontFamily: 'Kanit',
+              color: color,
             ),
           )
         : Row(

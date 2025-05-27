@@ -296,12 +296,22 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               //       ),
               const SizedBox(height: 15),
 
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10),
+              //   // child: Expanded(child: _buildBanner()),
+              //   child: SizedBox(
+              //     height: heightCalculate(160),
+              //     child: _buildBanner(),
+              //   ),
+              // ),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SizedBox(
-                    height: heightCalculate(160),
-                    child: _buildBanner(),
-                  )),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Expanded(child: _buildBanner()),
+                  ],
+                ),
+              ),
               SizedBox(
                   height: (((MediaQuery.of(context).size.width *
                                   MediaQuery.of(context).size.height) /
@@ -426,17 +436,27 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  SizedBox(
-                    width: heightCalculate(
-                        (MediaQuery.of(context).size.height / 100) * 22),
-                    height: heightCalculate(
-                        (MediaQuery.of(context).size.width / 100) * 22),
+                  Expanded(
                     child: _buildButtonMenu({
                       'code': 'CONTACT',
                       'title': 'โทรศัพท์',
                       'imageUrl': 'assets/menu/โทรศัพท์.png'
                     }, true),
                   ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  // SizedBox(
+                  //   width: heightCalculate(
+                  //       (MediaQuery.of(context).size.height / 100) * 22),
+                  //   height: heightCalculate(
+                  //       (MediaQuery.of(context).size.width / 100) * 22),
+                  //   child: _buildButtonMenu({
+                  //     'code': 'CONTACT',
+                  //     'title': 'โทรศัพท์',
+                  //     'imageUrl': 'assets/menu/โทรศัพท์.png'
+                  //   }, true),
+                  // ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -1116,18 +1136,13 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
   _buildBanner() {
     return Stack(
       children: [
-        SizedBox(
-          height: (((MediaQuery.of(context).size.width *
-                          MediaQuery.of(context).size.height) /
-                      MediaQuery.of(context).size.height) -
-                  MediaQuery.of(context).size.width) +
-              170,
+        Container(
           child: CarouselSlider(
             options: CarouselOptions(
               aspectRatio: 3,
               enlargeCenterPage: true,
               scrollDirection: Axis.horizontal,
-              viewportFraction: 0.8,
+              // viewportFraction: 0.8,
               autoPlay: true,
               // enlargeFactor: 0.4,
               // enlargeStrategy: CenterPageEnlargeStrategy.zoom,
@@ -1142,7 +1157,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
               (item) {
                 int index = mockBannerList.indexOf(item);
                 return
-
+          
                     // Text( item['imageUrl']);
                     InkWell(
                         onTap: () {
@@ -1182,6 +1197,7 @@ class _MenuV3 extends State<MenuV3> with WidgetsBindingObserver {
             ).toList(),
           ),
         ),
+       
         Positioned(
           bottom: 20,
           left: 0,

@@ -161,7 +161,14 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, goBack, title: 'สมัครสมาชิก'),
+      appBar: header(
+        context,
+        goBack,
+        title: 'สมัครสมาชิก',
+        isCenter: true,
+        isShowLogo: false,
+        color: Color(0XFFFFFFFF),
+      ),
       // backgroundColor: Colors.white,
       // backgroundColor: Theme.of(context).accentColor,
       body: GestureDetector(
