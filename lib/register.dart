@@ -1255,7 +1255,7 @@ class _RegisterPageState extends State<RegisterPage> {
           labelTextFormFieldPasswordOldNew('* รหัสผ่าน', true),
           textFormField(
             txtPassword,
-            '',
+            txtConPassword.text,
             'รหัสผ่าน',
             'รหัสผ่าน',
             true,
@@ -1291,7 +1291,6 @@ class _RegisterPageState extends State<RegisterPage> {
               if (model!.isEmpty) {
                 return 'กรุณากรอกข้อมูล. $model';
               }
-
               if (model != txtPassword.text) {
                 return 'กรุณากรอกรหัสผ่านให้ตรงกัน.';
               }
