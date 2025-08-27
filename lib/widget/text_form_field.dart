@@ -217,12 +217,13 @@ textFormField(
       ),
     ),
     validator: (model) {
+
       if (model!.isEmpty) {
         return 'กรุณากรอก$validator.';
       }
-      if (isPassword && model != modelMatch && modelMatch != null) {
-        return 'กรุณากรอกรหัสผ่านให้ตรงกัน.';
-      }
+      // if (isPassword && model != modelMatch && modelMatch != null) {
+      //   return 'กรุณากรอกรหัสผ่านให้ตรงกัน.';
+      // }
 
       if (isUserName) {
         String pattern = r'^[a-zA-Z0-9]+$';
@@ -233,8 +234,9 @@ textFormField(
       }
       if (isPassword) {
         // String pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$';
-        String pattern = r'^[a-zA-Z0-9]{6,}$';
+        String pattern = r'^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$';
         RegExp regex = RegExp(pattern);
+        print(!regex.hasMatch(model));
         if (!regex.hasMatch(model)) {
           return 'กรุณากรอกรูปแบบรหัสผ่านให้ถูกต้อง.';
         }
