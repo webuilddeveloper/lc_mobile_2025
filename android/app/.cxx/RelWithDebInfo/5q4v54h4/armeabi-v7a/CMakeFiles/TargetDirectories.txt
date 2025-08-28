@@ -1,0 +1,2 @@
+/Users/panuwitchaiton/webuild/election/election_mobile/lc_mobile_2025/android/app/.cxx/RelWithDebInfo/5q4v54h4/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/panuwitchaiton/webuild/election/election_mobile/lc_mobile_2025/android/app/.cxx/RelWithDebInfo/5q4v54h4/armeabi-v7a/CMakeFiles/rebuild_cache.dir

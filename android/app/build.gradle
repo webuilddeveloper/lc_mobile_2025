@@ -60,7 +60,7 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             // signingConfig = signingConfigs.debug
             signingConfig = signingConfigs.release
-            signingConfig = signingConfigs.getByName("release")
+            // signingConfig = signingConfigs.getByName("release")
             // isMinifyEnabled = false // เปิดใช้การลดขนาดโค้ดที่ไม่ได้ใช้
             // isShrinkResources = false // เปิดใช้การลบ Resource ที่ไม่ได้ใช้
             minifyEnabled = false // เปิดใช้การลดขนาดโค้ดที่ไม่ได้ใช้
