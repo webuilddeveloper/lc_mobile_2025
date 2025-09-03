@@ -937,7 +937,7 @@ class _LoginPageState extends State<LoginPage> {
   pressApple() async {
     var obj = await signInWithApple();
     var model = {
-      "username": obj.user!.email ?? obj.user?.uid,
+      "username": obj!.user?.email ?? obj.user?.uid,
       "email": obj.user?.email ?? '',
       "imageUrl": '',
       "firstName": obj.user?.email,
@@ -954,12 +954,12 @@ class _LoginPageState extends State<LoginPage> {
       category: 'apple',
     );
     if (obj != null) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => MenuV3(),
-      //   ),
-      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MenuV3(),
+        ),
+      );
     }
   }
 }
