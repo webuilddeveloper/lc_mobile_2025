@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:lc/v3/privilege_v3/list_content_horizontal_privilege_v3.dart';
 import 'package:lc/v3/privilege_v3/privilege_form_v3.dart';
 import 'package:lc/v3/privilege_v3/privilege_list_vertical_v3.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -163,167 +164,131 @@ class _PrivilegeMainV3 extends State<PrivilegeMainV3>
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 30),
-              ],
-            ),
-          ),
-        ),
-        body: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (OverscrollIndicatorNotification overScroll) {
-            overScroll.disallowIndicator();
-            return false;
-          },
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
+        appBar: headerV4(context, () {
+          Navigator.pop(context);
+        }, title: widget.title),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (OverscrollIndicatorNotification overScroll) {
+              overScroll.disallowIndicator();
+              return false;
             },
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 5.0,
-                ),
-
-                tabCategory(),
-                SizedBox(
-                  height: 10.0,
-                ),
-                // KeySearch(
-                //   show: hideSearch,
-                //   onKeySearchChange: (String val) {
-                //     setState(() {
-                //       keySearch = val;
-                //     });
-                //   },
-                // ),
-                // SizedBox(
-                //   height: 10.0,
-                // ),
-                Expanded(
-                  child: SmartRefresher(
-                    enablePullDown: false,
-                    enablePullUp: true,
-                    footer: ClassicFooter(
-                      loadingText: ' ',
-                      canLoadingText: ' ',
-                      idleText: ' ',
-                      idleIcon:
-                          Icon(Icons.arrow_upward, color: Colors.transparent),
-                    ),
-                    controller: _refreshController,
-                    onLoading: _onLoading,
-                    child: _searchController.text == ''
-                        ? isMain
-                            ? ListView(
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(), // 2nd
-
-                                children: [
-                                  // ListContentHorizontalPrivilegeSuggestedV3(
-                                  //   // title: 'แนะนำ111',
-                                  //   url: privilegeApi + 'read',
-                                  //   model: _futurePromotion,
-                                  //   urlComment: '',
-                                  //   navigationList: () {
-                                  //     setState(() {
-                                  //       _searchController.text = '';
-                                  //       isMain = false;
-                                  //       categorySelected = '';
-                                  //     });
-                                  //   },
-                                  //   navigationForm: (
-                                  //     String code,
-                                  //     dynamic model,
-                                  //   ) {
-                                  //     Navigator.push(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //         builder: (context) => PrivilegeFormV3(
-                                  //           code: code,
-                                  //           model: model,
-                                  //           urlRotation: rotationPrivilegeApi,
-                                  //         ),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // ),
-                                  _buildHighlight(),
-                                  for (int i = 0; i < listData.length; i++)
-                                    new ListContentHorizontalPrivilegeV3(
-                                      code: category[i]['code'],
-                                      title: category[i]['title'],
-                                      model: listData[i],
-                                      navigationList: () {
-                                        setState(() {
-                                          _searchController.text = '';
-                                          isMain = false;
-                                          categorySelected =
-                                              category[i]['code'];
-                                        });
-                                      },
-                                      navigationForm: (
-                                        String code,
-                                        dynamic model,
-                                      ) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PrivilegeFormV3(
-                                              code: code,
-                                              model: model,
-                                              urlRotation: rotationPrivilegeApi,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                ],
-                              )
-                            : reloadList()
-                        : reloadList(),
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(new FocusNode());
+              },
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 5.0,
                   ),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-              ],
+          
+                  tabCategory(),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  // KeySearch(
+                  //   show: hideSearch,
+                  //   onKeySearchChange: (String val) {
+                  //     setState(() {
+                  //       keySearch = val;
+                  //     });
+                  //   },
+                  // ),
+                  // SizedBox(
+                  //   height: 10.0,
+                  // ),
+                  Expanded(
+                    child: SmartRefresher(
+                      enablePullDown: false,
+                      enablePullUp: true,
+                      footer: ClassicFooter(
+                        loadingText: ' ',
+                        canLoadingText: ' ',
+                        idleText: ' ',
+                        idleIcon:
+                            Icon(Icons.arrow_upward, color: Colors.transparent),
+                      ),
+                      controller: _refreshController,
+                      onLoading: _onLoading,
+                      child: _searchController.text == ''
+                          ? isMain
+                              ? ListView(
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(), // 2nd
+          
+                                  children: [
+                                    // ListContentHorizontalPrivilegeSuggestedV3(
+                                    //   // title: 'แนะนำ111',
+                                    //   url: privilegeApi + 'read',
+                                    //   model: _futurePromotion,
+                                    //   urlComment: '',
+                                    //   navigationList: () {
+                                    //     setState(() {
+                                    //       _searchController.text = '';
+                                    //       isMain = false;
+                                    //       categorySelected = '';
+                                    //     });
+                                    //   },
+                                    //   navigationForm: (
+                                    //     String code,
+                                    //     dynamic model,
+                                    //   ) {
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (context) => PrivilegeFormV3(
+                                    //           code: code,
+                                    //           model: model,
+                                    //           urlRotation: rotationPrivilegeApi,
+                                    //         ),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    // ),
+                                    _buildHighlight(),
+                                    for (int i = 0; i < listData.length; i++)
+                                      new ListContentHorizontalPrivilegeV3(
+                                        code: category[i]['code'],
+                                        title: category[i]['title'],
+                                        model: listData[i],
+                                        navigationList: () {
+                                          setState(() {
+                                            _searchController.text = '';
+                                            isMain = false;
+                                            categorySelected =
+                                                category[i]['code'];
+                                          });
+                                        },
+                                        navigationForm: (
+                                          String code,
+                                          dynamic model,
+                                        ) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PrivilegeFormV3(
+                                                code: code,
+                                                model: model,
+                                                urlRotation: rotationPrivilegeApi,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                  ],
+                                )
+                              : reloadList()
+                          : reloadList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

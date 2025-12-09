@@ -12,6 +12,7 @@ import 'package:lc/pages/blank_page/dialog_fail.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/v3/menu_v3.dart';
 import 'package:lc/v3/widget/header_v3.dart';
+import 'package:lc/v4/menu_v4.dart';
 import 'package:lc/widget/header_v2.dart';
 import 'package:lc/widget/text_form_field.dart';
 
@@ -406,7 +407,7 @@ class _EditUserInformationV2PageState extends State<EditUserInformationV2Page> {
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => MenuV3(),
+                        builder: (context) => MenuV4(pageIndex: 3,),
                       ),
                       (Route<dynamic> route) => false,
                     );

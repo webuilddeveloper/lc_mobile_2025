@@ -6,6 +6,7 @@ import 'package:lc/shared/api_provider.dart';
 import 'package:lc/v3/apply_exam_v3/apply_exam_list_v3.dart';
 import 'package:lc/v3/reporter_v3/reporter_list_category_v3.dart';
 import 'package:lc/v3/training_v3/training_main_v3.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 
 class EserviceList extends StatefulWidget {
   const EserviceList({
@@ -39,51 +40,12 @@ class _EserviceList extends State<EserviceList> {
     return GestureDetector(
       child: Scaffold(
         backgroundColor: const Color(0xFFF7F7F7),
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0XFFF7F7F7),
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: const Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 30),
-              ],
-            ),
-          ),
-        ),
+        appBar: headerV4(context, () {
+          Navigator.pop(context);
+        }, title: widget.title),
         body: Column(
           children: [
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView(
                 children: [
@@ -99,6 +61,7 @@ class _EserviceList extends State<EserviceList> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   InkWell(
                     onTap: () => Navigator.push(
                       context,
@@ -131,7 +94,8 @@ class _EserviceList extends State<EserviceList> {
                             ),
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.only(right: 20, top: 10),
+                                margin:
+                                    const EdgeInsets.only(right: 20, top: 10),
                                 padding: const EdgeInsets.only(
                                     top: 10, left: 15, right: 15, bottom: 10),
                                 decoration: const BoxDecoration(
@@ -210,7 +174,8 @@ class _EserviceList extends State<EserviceList> {
                             ),
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.only(right: 20, top: 10),
+                                margin:
+                                    const EdgeInsets.only(right: 20, top: 10),
                                 padding: const EdgeInsets.only(
                                     top: 10, left: 15, right: 15, bottom: 10),
                                 decoration: const BoxDecoration(
@@ -223,8 +188,7 @@ class _EserviceList extends State<EserviceList> {
                                 width: 100,
                                 height: 100,
                                 child: const Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'อบรม',
@@ -289,7 +253,8 @@ class _EserviceList extends State<EserviceList> {
                             ),
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.only(right: 20, top: 10),
+                                margin:
+                                    const EdgeInsets.only(right: 20, top: 10),
                                 padding: const EdgeInsets.only(
                                     top: 10, left: 15, right: 15, bottom: 10),
                                 decoration: const BoxDecoration(
@@ -302,8 +267,7 @@ class _EserviceList extends State<EserviceList> {
                                 width: 100,
                                 height: 100,
                                 child: const Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'ร้องเรียนแจ้งเหตุ',
@@ -369,8 +333,8 @@ class _EserviceList extends State<EserviceList> {
     var dateString = DateFormat('yyyyMMdd').format(date).toString();
     reference = '$profileCode-${dateString}070000';
     // reference = "20210216111726-103-860-20220817070000";
-    var resCheckIn =
-        await postDio('${server}m/v2/volunteeLawyer/checkIn/read', {
+    var resCheckIn = await postDio(
+        '${server}m/v2/volunteeLawyer/checkIn/read', {
       "reference": '$profileCode-${dateString}070000',
       "profileCode": profileCode
     });

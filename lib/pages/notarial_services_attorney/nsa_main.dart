@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lc/pages/notarial_services_attorney/nsa_report_1.dart';
+import 'package:lc/v4/menu_v4.dart';
 import '../../component/material/custom_alert_dialog.dart';
 import '../../shared/api_provider.dart';
 import '../../v3/menu_v3.dart';
@@ -297,7 +298,7 @@ class _NSAMainFormState extends State<NSAMainForm> {
                   onTap: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MenuV3(),
+                      builder: (context) => MenuV4(),
                     ),
                   ),
                   child: Image.asset(

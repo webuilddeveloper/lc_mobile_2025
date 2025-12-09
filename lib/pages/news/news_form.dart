@@ -12,6 +12,7 @@ import 'package:lc/component/link_url_in.dart';
 import 'package:lc/component/loadingImageNetwork.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/shared/extension.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -43,21 +44,20 @@ class _NewsFormState extends State<NewsForm> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SmartRefresher(
-          enablePullDown: false,
-          enablePullUp: true,
-          footer: ClassicFooter(
-            loadingText: ' ',
-            canLoadingText: ' ',
-            idleText: ' ',
-            idleIcon: Icon(Icons.arrow_upward, color: Colors.transparent),
-          ),
-          controller: _refreshController,
-          onLoading: _onLoading,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              Stack(
+        appBar: headerV4(
+            context,
+            () => {
+                  Navigator.pop(context, false),
+                },
+            title: 'ข่าวประชาสัมพันธ์'),
+        body: Stack(
+          // padding: EdgeInsets.zero,
+          children: [
+            Positioned.fill(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Stack(
                 children: [
                   CarouselSlider(
                     items: [model['imageUrl'], ..._galleries]
@@ -102,7 +102,7 @@ class _NewsFormState extends State<NewsForm> {
                         }),
                   ),
                   Positioned(
-                    bottom: 10,
+                    top: 360,
                     right: 15,
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -126,211 +126,238 @@ class _NewsFormState extends State<NewsForm> {
                     ),
                   ),
                   Positioned(
-                    left: 15,
-                    top: 10 + MediaQuery.of(context).padding.top,
+                    right: 15,
+                    top: 15,
                     child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      onTap: () {
+                        final RenderObject? box = context.findRenderObject();
+                        Share.share(
+                          _urlShared +
+                              'content/news/' +
+                              '${model['code']}' +
+                              ' ${model['title']}',
+                          subject: '${model['title']}',
+                          sharePositionOrigin:
+                              (box as RenderBox).localToGlobal(Offset.zero) &
+                                  (box).size,
+                        );
+                      },
                       child: Container(
-                        height: 30,
-                        width: 30,
+                        height: 40,
+                        width: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          // color: Colors.white,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Icon(
-                          Icons.arrow_back,
-                          color: Color(0xFF2D9CED),
+                          Icons.share_outlined,
+                          color: Colors.white,
+                          size: 40,
                         ),
                       ),
                     ),
                   )
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${model['title']}',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+            ),
+            Positioned(
+              top: 400, // 👈 ระยะการเลื่อนลงจากด้านบน
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(24),
+                  ),
+                ),
+                // padding: EdgeInsets.all(15),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${model['title']}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${model['createDate']}' != null
-                                    ? 'วันที่ ' +
-                                        dateStringToDate(
-                                            '${model['createDate']}') +
-                                        ' | เข้าชม ' +
-                                        '${model['view']}' +
-                                        ' ครั้ง'
-                                    : '',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${model['createDate']}' != null
+                                      ? 'วันที่ ' +
+                                          dateStringToDate(
+                                              '${model['createDate']}') +
+                                          ' | เข้าชม ' +
+                                          '${model['view']}' +
+                                          ' ครั้ง'
+                                      : '',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '${model['createBy']}' != null
-                                    ? 'โดย ${model['createBy']}'
-                                    : '',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
+                                Text(
+                                  '${model['createBy']}' != null
+                                      ? 'โดย ${model['createBy']}'
+                                      : '',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            final RenderObject? box =
-                                context.findRenderObject();
-                            Share.share(
-                              _urlShared +
-                                  'content/news/' +
-                                  '${model['code']}' +
-                                  ' ${model['title']}',
-                              subject: '${model['title']}',
-                              sharePositionOrigin: (box as RenderBox)
-                                      .localToGlobal(Offset.zero) &
-                                  (box).size,
-                            );
-                          },
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF2FAFF),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(
-                              'assets/images/share_2.png',
-                              width: 17,
-                              height: 17,
-                              color: Color(0xFF2D9CED),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 11),
+                          GestureDetector(
+                            onTap: () {
+                              final RenderObject? box =
+                                  context.findRenderObject();
+                              Share.share(
+                                _urlShared +
+                                    'content/news/' +
+                                    '${model['code']}' +
+                                    ' ${model['title']}',
+                                subject: '${model['title']}',
+                                sharePositionOrigin: (box as RenderBox)
+                                        .localToGlobal(Offset.zero) &
+                                    (box).size,
+                              );
+                            },
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF2FAFF),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Icon(
+                                Icons.share,
+                                size: 40,
+                                color: Color(0xFF2D9CED),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 11),
 
-                    Html(
-                      data: model['description'],
-                      style: {
-                        'body': Style(
-                          color: Color(0xFF000000),
-                        ),
-                      },
-                      onLinkTap: (String? url, Map<String, String> attributes,
-                          element) {
-                        launchInWebViewWithJavaScript(url!);
-                      },
-                    ),
-                    SizedBox(height: 5),
-                    // const SizedBox(height: 30),
-                    // const Center(
-                    //   child: Text(
-                    //     'แชร์ไปยัง',
-                    //     style: TextStyle(
-                    //       fontSize: 15,
-                    //       fontWeight: FontWeight.w500,
-                    //     ),
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 15),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Container(
-                    //       height: 45,
-                    //       width: 45,
-                    //       alignment: Alignment.center,
-                    //       decoration: BoxDecoration(
-                    //         color: Color(0xFFF2FAFF),
-                    //         borderRadius: BorderRadius.circular(15),
-                    //       ),
-                    //       child: Image.asset(
-                    //         'assets/images/share_2.png',
-                    //         width: 25,
-                    //         height: 25,
-                    //         color: Color(0xFF2D9CED),
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 15),
-                    //     Container(
-                    //       height: 45,
-                    //       width: 45,
-                    //       alignment: Alignment.center,
-                    //       decoration: BoxDecoration(
-                    //         color: Color(0xFFF2FAFF),
-                    //         borderRadius: BorderRadius.circular(15),
-                    //       ),
-                    //       child: Image.asset(
-                    //         'assets/images/facebook_circle_2.png',
-                    //         width: 25,
-                    //         height: 25,
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 15),
-                    //     Container(
-                    //       height: 45,
-                    //       width: 45,
-                    //       alignment: Alignment.center,
-                    //       decoration: BoxDecoration(
-                    //         color: Color(0xFFF2FAFF),
-                    //         borderRadius: BorderRadius.circular(15),
-                    //       ),
-                    //       child: Image.asset(
-                    //         'assets/images/line_circle.png',
-                    //         width: 25,
-                    //         height: 25,
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 15),
-                    //     Container(
-                    //       height: 45,
-                    //       width: 45,
-                    //       alignment: Alignment.center,
-                    //       decoration: BoxDecoration(
-                    //         color: Color(0xFFF2FAFF),
-                    //         borderRadius: BorderRadius.circular(15),
-                    //       ),
-                    //       child: Image.asset(
-                    //         'assets/images/copy.png',
-                    //         width: 25,
-                    //         height: 25,
-                    //         color: Color(0xFF2D9CED),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                      Html(
+                        data: model['description'],
+                        style: {
+                          'body': Style(
+                            color: Color(0xFF000000),
+                          ),
+                        },
+                        onLinkTap: (String? url, Map<String, String> attributes,
+                            element) {
+                          launchInWebViewWithJavaScript(url!);
+                        },
+                      ),
+                      SizedBox(height: 5),
+                      // const SizedBox(height: 30),
+                      // const Center(
+                      //   child: Text(
+                      //     'แชร์ไปยัง',
+                      //     style: TextStyle(
+                      //       fontSize: 15,
+                      //       fontWeight: FontWeight.w500,
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 15),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       height: 45,
+                      //       width: 45,
+                      //       alignment: Alignment.center,
+                      //       decoration: BoxDecoration(
+                      //         color: Color(0xFFF2FAFF),
+                      //         borderRadius: BorderRadius.circular(15),
+                      //       ),
+                      //       child: Image.asset(
+                      //         'assets/images/share_2.png',
+                      //         width: 25,
+                      //         height: 25,
+                      //         color: Color(0xFF2D9CED),
+                      //       ),
+                      //     ),
+                      //     const SizedBox(width: 15),
+                      //     Container(
+                      //       height: 45,
+                      //       width: 45,
+                      //       alignment: Alignment.center,
+                      //       decoration: BoxDecoration(
+                      //         color: Color(0xFFF2FAFF),
+                      //         borderRadius: BorderRadius.circular(15),
+                      //       ),
+                      //       child: Image.asset(
+                      //         'assets/images/facebook_circle_2.png',
+                      //         width: 25,
+                      //         height: 25,
+                      //       ),
+                      //     ),
+                      //     const SizedBox(width: 15),
+                      //     Container(
+                      //       height: 45,
+                      //       width: 45,
+                      //       alignment: Alignment.center,
+                      //       decoration: BoxDecoration(
+                      //         color: Color(0xFFF2FAFF),
+                      //         borderRadius: BorderRadius.circular(15),
+                      //       ),
+                      //       child: Image.asset(
+                      //         'assets/images/line_circle.png',
+                      //         width: 25,
+                      //         height: 25,
+                      //       ),
+                      //     ),
+                      //     const SizedBox(width: 15),
+                      //     Container(
+                      //       height: 45,
+                      //       width: 45,
+                      //       alignment: Alignment.center,
+                      //       decoration: BoxDecoration(
+                      //         color: Color(0xFFF2FAFF),
+                      //         borderRadius: BorderRadius.circular(15),
+                      //       ),
+                      //       child: Image.asset(
+                      //         'assets/images/copy.png',
+                      //         width: 25,
+                      //         height: 25,
+                      //         color: Color(0xFF2D9CED),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
 
-                    const SizedBox(height: 35),
-                    model['linkUrl'] != '' ? linkButton(model) : Container(),
-                    Container(
-                      height: 10,
-                    ),
-                    model['fileUrl'] != '' ? fileUrl(model) : Container(),
-                    SizedBox(height: 10),
-                    _buildRotation(),
-                    comment,
-                  ],
+                      const SizedBox(height: 35),
+                      model['linkUrl'] != '' ? linkButton(model) : Container(),
+                      Container(
+                        height: 10,
+                      ),
+                      model['fileUrl'] != '' ? fileUrl(model) : Container(),
+                      SizedBox(height: 10),
+                      _buildRotation(),
+                      comment,
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

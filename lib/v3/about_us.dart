@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lc/component/link_url_in.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/shared/scroll_behavior.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsPage extends StatefulWidget {
@@ -30,37 +31,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFF7F7F7),
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFFF7F7F7),
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: const Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 30),
-              ],
-            ),
-          ),
+        appBar: headerV4(
+          context,
+          goBack,
+          title: 'เกี่ยวกับเรา',
         ),
         body: FutureBuilder<dynamic>(
           future: _futureModel,
@@ -75,7 +49,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
               return ScrollConfiguration(
                 behavior: CsBehavior(),
                 child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
                   children: [
                     Image.asset(
                       'assets/logo_login.png',
@@ -258,6 +232,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
         ),
       },
     );
+  }
+
+  void goBack() async {
+    Navigator.pop(context, false);
   }
 
   Widget rowContactInformation(

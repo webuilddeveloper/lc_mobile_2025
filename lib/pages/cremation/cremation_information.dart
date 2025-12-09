@@ -5,6 +5,7 @@ import 'package:lc/component/teacher/text_row.dart';
 import 'package:lc/pages/blank_page/blank_loading.dart';
 import 'package:lc/pages/poll/poll_list_vertical.dart';
 import 'package:lc/v3/menu_v3.dart';
+import 'package:lc/v4/menu_v4.dart';
 
 import '../../shared/extension.dart';
 
@@ -49,7 +50,7 @@ class _CremationInfomationPageState extends State<CremationInformationPage> {
     // Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => MenuV3(),
+        builder: (context) => MenuV4(),
       ),
     );
   }

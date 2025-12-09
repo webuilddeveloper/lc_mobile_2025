@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lc/component/link_url_in.dart';
 import 'package:lc/models/user.dart';
 import 'package:lc/v3/poll_v3/poll_list_v3.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SearchOtherList extends StatefulWidget {
@@ -35,48 +36,7 @@ class _SearchOtherList extends State<SearchOtherList> {
     return GestureDetector(
       child: Scaffold(
         backgroundColor: Color(0xFFF7F7F7),
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: Color(0XFFF7F7F7),
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 30),
-              ],
-            ),
-          ),
-        ),
+        appBar: headerV4(context, () => goBack(), title: 'สืบค้นฐานข้อมูล'),
         body: Column(
           children: [
             SizedBox(height: 10),
@@ -109,7 +69,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                           Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(left: 20, top: 10),
+                                margin: EdgeInsets.only(left: 20, top: 16),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image:
@@ -149,7 +109,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                                           fontFamily: 'Kanit',
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.w500,
-                                          color: Color(0xFF2D9CED),
+                                          color: Color(0xFF011895),
                                         ),
                                       ),
                                       SizedBox(height: 5),
@@ -187,7 +147,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                           Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(left: 20, top: 10),
+                                margin: EdgeInsets.only(left: 20, top: 16),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image:
@@ -227,7 +187,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                                           fontFamily: 'Kanit',
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.w500,
-                                          color: Color(0xFF2D9CED),
+                                          color: Color(0xFF011895),
                                         ),
                                       ),
                                       SizedBox(height: 5),
@@ -265,7 +225,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                           Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(left: 20, top: 10),
+                                margin: EdgeInsets.only(left: 20, top: 16),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage(
@@ -305,7 +265,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                                           fontFamily: 'Kanit',
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.w500,
-                                          color: Color(0xFF2D9CED),
+                                          color: Color(0xFF011895),
                                         ),
                                       ),
                                       SizedBox(height: 5),
@@ -350,7 +310,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                           Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(left: 20, top: 10),
+                                margin: EdgeInsets.only(left: 20, top: 16),
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage(
@@ -390,7 +350,7 @@ class _SearchOtherList extends State<SearchOtherList> {
                                           fontFamily: 'Kanit',
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.w500,
-                                          color: Color(0xFF2D9CED),
+                                          color: Color(0xFF011895),
                                         ),
                                       ),
                                       SizedBox(height: 5),
@@ -434,6 +394,10 @@ class _SearchOtherList extends State<SearchOtherList> {
   void dispose() {
     txtDescription.dispose();
     super.dispose();
+  }
+
+  void goBack() {
+    Navigator.pop(context, false);
   }
 
   _callRead() async {

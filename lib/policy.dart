@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:lc/v3/widget/header_v3.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,7 +39,7 @@ class _PolicyPageState extends State<PolicyPage> {
 
   _buildPolicy() {
     return Scaffold(
-      appBar: headerV3(context, () {
+      appBar: headerV4(context, () {
         Navigator.pop(context);
       }, title: 'นโยบาย'),
       backgroundColor: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lc/shared/extension.dart';
+import 'package:lc/v4/menu_v4.dart';
 
 import '../../component/material/custom_alert_dialog.dart';
 import '../../shared/api_provider.dart';
@@ -187,7 +188,7 @@ class _CremationRegisterFirstFormState
                   onTap: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MenuV3(),
+                      builder: (context) => MenuV4(),
                     ),
                   ),
                   child: Image.asset(

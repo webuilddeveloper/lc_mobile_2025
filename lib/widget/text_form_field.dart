@@ -482,6 +482,7 @@ textFormFieldV2(
         fontWeight: FontWeight.normal,
         fontFamily: 'Kanit',
         fontSize: 13.0,
+        color: Colors.red,
       ),
     ),
     validator: (model) {

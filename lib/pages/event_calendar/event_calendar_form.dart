@@ -29,9 +29,9 @@ class _EventCalendarFormPageState extends State<EventCalendarFormPage> {
   dynamic model;
   int _currentImage = 0;
   List<dynamic> _galleries = [];
-  late Future<dynamic> _futureRotation;
+  Future<dynamic>? _futureRotation;
   String _urlShared = '';
-  late Comment comment;
+  Comment? comment;
   int _limit = 10;
 
   final RefreshController _refreshController =
@@ -244,7 +244,7 @@ class _EventCalendarFormPageState extends State<EventCalendarFormPage> {
                       model['fileUrl'] != '' ? fileUrl(model) : Container(),
                       const SizedBox(height: 10),
                       _buildRotation(),
-                      comment,
+                      comment!,
                     ],
                   ),
                 ),
@@ -280,7 +280,7 @@ class _EventCalendarFormPageState extends State<EventCalendarFormPage> {
 
   _buildRotation() {
     return CarouselRotation(
-      model: _futureRotation,
+      model: _futureRotation!,
       nav: (String path, String action, dynamic model, String code) {
         if (action == 'out') {
           launchInWebViewWithJavaScript(path);

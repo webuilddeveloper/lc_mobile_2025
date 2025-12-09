@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lc/pages/blank_page/dialog_fail.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/v3/widget/header_v3.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:lc/widget/header_v2.dart';
 
 class OrganizationPage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
   _buildScaffold() {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: headerV3(context, goBack, title: 'ประเภทสมาชิก'),
+      appBar: headerV4(context, goBack, title: 'ประเภทสมาชิก'),
       body: _buildListView(),
     );
   }

@@ -14,7 +14,7 @@ class EventCalendarList extends StatefulWidget {
 }
 
 class _EventCalendarList extends State<EventCalendarList> {
-  late EventCalendarList eventCalendarList;
+  EventCalendarList? eventCalendarList;
   bool hideSearch = true;
   List<dynamic> listData = [];
   List<dynamic> category = [];
@@ -23,7 +23,7 @@ class _EventCalendarList extends State<EventCalendarList> {
   String keySearch = '';
   bool isHighlight = false;
   int _limit = 10;
-  late Future futureModel;
+  Future? futureModel;
 
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -66,7 +66,7 @@ class _EventCalendarList extends State<EventCalendarList> {
 
   reloadList() {
     return EventCalendarListVertical(
-      model: futureModel,
+      model: futureModel!,
       urlGallery: eventCalendarGalleryApi,
       urlComment: eventCalendarCommentApi,
       url: '${eventCalendarApi}read',
@@ -246,7 +246,7 @@ class _EventCalendarList extends State<EventCalendarList> {
                     controller: _refreshController,
                     onLoading: _onLoading,
                     child: EventCalendarListVertical(
-                      model: futureModel,
+                      model: futureModel!,
                       urlGallery: eventCalendarGalleryApi,
                       urlComment: eventCalendarCommentApi,
                       url: '${eventCalendarApi}read',

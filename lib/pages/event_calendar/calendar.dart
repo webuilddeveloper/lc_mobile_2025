@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:lc/pages/event_calendar/event_calendar_form.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/shared/extension.dart';
@@ -17,20 +18,20 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage>
     with TickerProviderStateMixin {
   final storage = new FlutterSecureStorage();
-  late ValueNotifier<List<dynamic>> _selectedEvents;
+  ValueNotifier<List<dynamic>>? _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
-  late DateTime _selectedDay;
-  late DateTime? _rangeStart;
-  late DateTime? _rangeEnd;
+  DateTime? _selectedDay;
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
 
-  late LinkedHashMap<DateTime, List<dynamic>> model;
+  LinkedHashMap<DateTime, List<dynamic>>? model;
   var markData = [];
-  late Map<DateTime, List<dynamic>> itemEvents;
+  Map<DateTime, List<dynamic>>? itemEvents;
 
-  late AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   void initState() {
@@ -47,19 +48,19 @@ class _CalendarPageState extends State<CalendarPage>
       );
 
     _selectedDay = DateTime.now();
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
 
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
-    _animationController.forward();
+    _animationController!.forward();
     getMarkerEvent();
   }
 
   @override
   void dispose() {
-    _selectedEvents.dispose();
+    _selectedEvents!.dispose();
     super.dispose();
   }
 
@@ -89,7 +90,7 @@ class _CalendarPageState extends State<CalendarPage>
       var mainEvent = LinkedHashMap<DateTime, List<dynamic>>(
         equals: isSameDay,
         hashCode: getHashCode,
-      )..addAll(itemEvents);
+      )..addAll(itemEvents!);
 
       setState(() {
         model = mainEvent;
@@ -106,7 +107,7 @@ class _CalendarPageState extends State<CalendarPage>
     // print('kEvents ---> $kEvents');
 
     // return kEvents[day] ?? [];
-    return model[day] ?? [];
+    return model![day] ?? [];
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -119,13 +120,14 @@ class _CalendarPageState extends State<CalendarPage>
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+      _selectedEvents!.value = _getEventsForDay(selectedDay);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: screen(),
     );
   }
@@ -133,78 +135,254 @@ class _CalendarPageState extends State<CalendarPage>
   screen() {
     return Column(
       children: [
-        TableCalendar<dynamic>(
-          firstDay: DateTime.utc(DateTime.now().year - 1, 01, 01),
-          lastDay: DateTime.utc(DateTime.now().year + 1, 12, 31),
-          focusedDay: _focusedDay,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          rangeStartDay: _rangeStart,
-          rangeEndDay: _rangeEnd,
-          calendarFormat: _calendarFormat,
-          rangeSelectionMode: _rangeSelectionMode,
-          availableGestures: AvailableGestures.all,
-          eventLoader: _getEventsForDay,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          headerStyle: HeaderStyle(formatButtonVisible: false),
-          calendarStyle: CalendarStyle(
-            outsideDaysVisible: true,
-            weekendTextStyle: TextStyle().copyWith(
-              color: Color(0xFFdec6c6),
-              fontFamily: 'Sarabun',
-              fontWeight: FontWeight.normal,
+        Container(
+          padding: EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(29),
             ),
-            holidayTextStyle: TextStyle().copyWith(
-              color: Color(0xFFC5DAFC),
-              fontFamily: 'Sarabun',
-              fontWeight: FontWeight.normal,
-            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.10),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: Offset(
+                  0,
+                  4,
+                ),
+              ),
+            ],
           ),
-          onDaySelected: _onDaySelected,
-          // onRangeSelected: _onRangeSelected,
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-          },
+          child: TableCalendar<dynamic>(
+            firstDay: DateTime.utc(DateTime.now().year - 1, 01, 01),
+            lastDay: DateTime.utc(DateTime.now().year + 1, 12, 31),
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            rangeStartDay: _rangeStart,
+            rangeEndDay: _rangeEnd,
+            calendarFormat: _calendarFormat,
+            rangeSelectionMode: _rangeSelectionMode,
+            availableGestures: AvailableGestures.all,
+            eventLoader: _getEventsForDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            headerStyle: HeaderStyle(
+              formatButtonVisible: false,
+              leftChevronVisible: false,
+              rightChevronVisible: false,
+            ),
+            calendarStyle: CalendarStyle(
+              defaultDecoration: BoxDecoration(
+                color: Colors.blue.shade50, // สีพื้นหลัง
+                borderRadius: BorderRadius.circular(12),
+              ),
+              outsideDaysVisible: false,
+              weekendTextStyle: TextStyle().copyWith(
+                color: Colors.black,
+                fontFamily: 'Sarabun',
+                fontWeight: FontWeight.normal,
+              ),
+              holidayTextStyle: TextStyle().copyWith(
+                color: Color(0xFFC5DAFC),
+                fontFamily: 'Sarabun',
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+            onDaySelected: _onDaySelected,
+            // onRangeSelected: _onRangeSelected,
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
 
-          calendarBuilders: CalendarBuilders(
-            selectedBuilder: (context, date, _) {
-              return FadeTransition(
-                opacity:
-                    Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                child: Container(
-                  margin: const EdgeInsets.all(5.0),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFC5DAFC),
+            calendarBuilders: CalendarBuilders(
+              headerTitleBuilder: (context, day) {
+                final thaiMonth = DateFormat.MMMM('th_TH').format(day);
+                final buddhistYear = day.year + 543;
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Column(
+                    children: [
+                      // --- Header เดิม ----
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _focusedDay = DateTime(
+                                    _focusedDay.year, _focusedDay.month - 1, 1);
+                              });
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_ios,
+                              size: 26,
+                            ),
+                          ),
+                          Text(
+                            '$thaiMonth $buddhistYear',
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _focusedDay = DateTime(
+                                    _focusedDay.year, _focusedDay.month + 1, 1);
+                              });
+                            },
+                            child: const Icon(
+                              Icons.arrow_forward_ios,
+                              size: 26,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // --- ⭐ เส้นคั่นระหว่าง Header กับ Day Row ---
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: Color(0xFFD9D9D9),
+                      ),
+
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                  width: 100,
-                  height: 100,
-                  child: Text(
-                    '${date.day}',
-                    style: TextStyle().copyWith(
-                      fontSize: 16.0,
-                      fontFamily: 'Sarabun',
-                      fontWeight: FontWeight.normal,
+                );
+              },
+              selectedBuilder: (context, date, _) {
+                return FadeTransition(
+                  opacity: Tween(begin: 0.0, end: 1.0)
+                      .animate(_animationController!),
+                  child: Container(
+                    margin: const EdgeInsets.all(5.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF2D9CED),
+                    ),
+                    width: 35,
+                    height: 35,
+                    child: Text(
+                      '${date.day}',
+                      style: TextStyle().copyWith(
+                          fontSize: 16.0,
+                          fontFamily: 'Sarabun',
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white),
                     ),
                   ),
-                ),
-              );
-            },
-            markerBuilder: (context, day, events) => _buildEventsMarker(events),
+                );
+              },
+              defaultBuilder: (context, date, _) {
+                return FadeTransition(
+                  opacity: Tween(begin: 0.0, end: 1.0)
+                      .animate(_animationController!),
+                  child: Container(
+                    margin: const EdgeInsets.all(5.0),
+                    alignment: Alignment.center,
+                    width: 35,
+                    height: 35,
+                    child: Text(
+                      '${date.day}',
+                      style: TextStyle().copyWith(
+                        fontSize: 16.0,
+                        fontFamily: 'Sarabun',
+                        fontWeight: FontWeight.normal,
+                        // color: Colors.white
+                      ),
+                    ),
+                  ),
+                );
+              },
+              todayBuilder: (context, date, _) {
+                return FadeTransition(
+                  opacity: Tween(begin: 0.0, end: 1.0)
+                      .animate(_animationController!),
+                  child: Container(
+                    margin: const EdgeInsets.all(5.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 1,
+                        color: Color(0xFF2D9CED),
+                      ),
+                      // color: Color(0xFF2D9CED),
+                    ),
+                    width: 35,
+                    height: 35,
+                    child: Text(
+                      '${date.day}',
+                      style: TextStyle().copyWith(
+                        fontSize: 16.0,
+                        fontFamily: 'Sarabun',
+                        fontWeight: FontWeight.normal,
+                        // color: Colors.white
+                      ),
+                    ),
+                  ),
+                );
+              },
+              markerBuilder: (context, day, events) =>
+                  events.length > 0 ? _buildEventsMarker(events) : Container(),
+            ),
           ),
         ),
         const SizedBox(height: 8.0),
         Expanded(
-          child: ValueListenableBuilder<List<dynamic>>(
-            valueListenable: _selectedEvents,
-            builder: (context, value, _) {
-              return ListView.builder(
-                itemCount: value.length,
-                itemBuilder: (context, index) {
-                  return eventCard(value[index]);
-                },
-              );
-            },
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: ValueListenableBuilder<List<dynamic>>(
+              valueListenable: _selectedEvents!,
+              builder: (context, value, _) {
+                final thaiMonth = DateFormat.MMMM('th_TH').format(_focusedDay);
+                final buddhistYear = _focusedDay.year + 543;
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${_focusedDay.day} $thaiMonth $buddhistYear',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          '${value.length} กิจกรรม',
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: value.length > 0
+                          ? ListView.builder(
+                              itemCount: value.length,
+                              itemBuilder: (context, index) {
+                                return eventCard(value[index]);
+                              },
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child: Text(
+                                'ไม่พบกิจกรรม',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black),
+                              ),
+                            ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ],
@@ -214,29 +392,20 @@ class _CalendarPageState extends State<CalendarPage>
   Widget _buildEventsMarker(List events) {
     if (events.length == 0) ;
     return Positioned(
-      bottom: 0,
+      bottom: -4,
       right: 0,
+      left: 0,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: events.length > 1
-              ? Color(0xFFa7141c)
-              : Color(0xFFa7141c).withOpacity(0.8),
+          color: Color(0xFF2D9CED),
+          // events.length > 1
+          //     ? Color(0xFF2D9CED)
+          //     : Color(0xFFa7141c).withOpacity(0.8),
         ),
-        width: 16.0,
-        height: 16.0,
-        child: Center(
-          child: Text(
-            '${events.length}',
-            style: TextStyle().copyWith(
-              color: Colors.white,
-              fontSize: 12.0,
-              fontFamily: 'Sarabun',
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-        ),
+        width: 7.0,
+        height: 7.0,
       ),
     );
   }
@@ -255,21 +424,21 @@ class _CalendarPageState extends State<CalendarPage>
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-        padding: EdgeInsets.all(8),
+        // margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+        padding: EdgeInsets.all(12),
         height: 110,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFfF2FAFF),
           borderRadius: BorderRadius.circular(12.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 0,
-              blurRadius: 3,
-              offset: Offset(0, 3),
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey.withOpacity(0.5),
+          //     spreadRadius: 0,
+          //     blurRadius: 3,
+          //     offset: Offset(0, 3),
+          //   ),
+          // ],
         ),
         child: Row(
           children: [

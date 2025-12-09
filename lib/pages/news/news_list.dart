@@ -6,7 +6,10 @@ import 'package:lc/component/loadingImageNetwork.dart';
 import 'package:lc/pages/news/news_form.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/shared/extension.dart';
+import 'package:lc/v4/widget/header_v4.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 
 class NewsList extends StatefulWidget {
   const NewsList({super.key, @required this.title});
@@ -30,6 +33,7 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
   bool _isSearch = false;
   late AnimationController _animationSearchController;
   TextEditingController _searchController = TextEditingController();
+  String sortNews = "new";
 
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -45,165 +49,112 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: const Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
+        appBar: headerV4(context, () => {
+          Navigator.pop(context,false),
+        }, title: 'ข่าวประชาสัมพันธ์'),
+        
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(16, 20, 16, 0),
+          child: Column(
+            children: [
+              _buildCategory(),
+              const SizedBox(height: 10),
+              Expanded(
+                child: SmartRefresher(
+                  enablePullDown: false,
+                  enablePullUp: true,
+                  footer: const ClassicFooter(
+                    loadingText: ' ',
+                    canLoadingText: ' ',
+                    idleText: ' ',
+                    idleIcon:
+                        Icon(Icons.arrow_upward, color: Colors.transparent),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
+                  controller: _refreshController,
+                  onLoading: _onLoading,
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      if ((_category == '') && !_isSearch) _buildHighlight(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _buildNews(),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 30),
-              ],
-            ),
-          ),
-        ),
-        body: Column(
-          children: [
-            _buildCategory(),
-            const SizedBox(height: 10),
-            Expanded(
-              child: SmartRefresher(
-                enablePullDown: false,
-                enablePullUp: true,
-                footer: const ClassicFooter(
-                  loadingText: ' ',
-                  canLoadingText: ' ',
-                  idleText: ' ',
-                  idleIcon: Icon(Icons.arrow_upward, color: Colors.transparent),
-                ),
-                controller: _refreshController,
-                onLoading: _onLoading,
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    if ((_category == '') && !_isSearch) _buildHighlight(),
-                    _buildNews(),
-                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildCategory() {
-    return SizedBox(
-      height: 25,
-      width: double.infinity,
-      child: Row(
-        children: [
-          const SizedBox(width: 15),
-          GestureDetector(
-            onTap: () {
+    return Column(
+      children: [
+        SizedBox(
+          height: 35,
+          child: TextFormField(
+            controller: _searchController,
+            keyboardType: TextInputType.text,
+            onEditingComplete: () {
+              FocusScope.of(context).unfocus();
               setState(() {
-                _showSearch = !_showSearch;
+                _isSearch = true;
+                _showSearch = false;
+                _limit = 0;
               });
+              _onLoading();
             },
-            child: AnimatedContainer(
-              height: 25,
-              width: _showSearch ? MediaQuery.of(context).size.width * 0.7 : 25,
-              duration: _animationSearchController.duration ??
-                  const Duration(milliseconds: 500),
-              curve: Curves.easeIn,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: const Color(0x408AD2FF),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: _showSearch
-                  ? TextFormField(
-                      controller: _searchController,
-                      keyboardType: TextInputType.text,
-                      onEditingComplete: () {
-                        FocusScope.of(context).unfocus();
-                        setState(() {
-                          _isSearch = true;
-                          _showSearch = false;
-                          _limit = 0;
-                        });
-                        _onLoading();
-                      },
-                      style: const TextStyle(
-                        color: Color(0xFF2D9CED),
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Kanit',
-                        fontSize: 15.0,
-                      ),
-                      decoration: _decorationSearch(
-                        context,
-                        hintText: 'ค้นหา',
-                      ),
-                      validator: (model) {
-                        if (model!.isEmpty) {
-                          return 'กรุณากรอกวันเดือนปีเกิด.';
-                        }
-                        return null;
-                      },
-                    )
-                  : Image.asset(
-                      'assets/images/search.png',
-                      color: const Color(0x802D9CED),
-                      height: 15,
-                      width: 15,
-                    ),
+            style: const TextStyle(
+              color: Color(0xFF2D9CED),
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Kanit',
+              fontSize: 15.0,
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: FutureBuilder(
-              future: _futureCategory,
-              builder: (_, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.separated(
-                    padding: const EdgeInsets.only(right: 15),
-                    physics: const ClampingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, __) =>
-                        // ignore: no_wildcard_variable_uses
-                        _buildItemCategory(snapshot.data[__]),
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
-                    itemCount: snapshot.data.length,
-                  );
-                } else {
-                  return const SizedBox();
-                }
+            decoration: _decorationSearch(
+              context,
+              hintText: 'ค้นหา',
+              filter: true,
+              onTapFilter: () {
+                showFilterModal();
               },
             ),
+            validator: (model) {
+              if (model!.isEmpty) {
+                return 'กรุณากรอกวันเดือนปีเกิด.';
+              }
+              return null;
+            },
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 30,
+          child: FutureBuilder(
+            future: _futureCategory,
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                  padding: const EdgeInsets.only(right: 15),
+                  physics: const ClampingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (_, __) =>
+                      // ignore: no_wildcard_variable_uses
+                      _buildItemCategory(snapshot.data[__]),
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  itemCount: snapshot.data.length,
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -225,7 +176,7 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           color:
               thisCatgory ? const Color(0xFF2D9CED) : const Color(0x268AD2FF),
-          borderRadius: BorderRadius.circular(12.5),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           '${model['title']}',
@@ -247,8 +198,9 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
           return Stack(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                height: MediaQuery.of(context).size.width - 30 + 37,
+                padding: const EdgeInsets.only(bottom: 20),
+                // height: MediaQuery.of(context).size.width - 30 + 37,
+                height: MediaQuery.of(context).size.width - 250,
                 width: double.infinity,
                 child: CarouselSlider(
                   items: snapshot.data
@@ -269,7 +221,7 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 20,
+                bottom: 0,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: snapshot.data.map<Widget>(
@@ -335,48 +287,70 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
             ),
           ),
           Positioned(
-            bottom: 50,
+            bottom: 0,
             left: 15,
             right: 15,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
               child: Container(
-                height: 98,
+                height: 88,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0x99FFFFFF),
+                  // color: const Color(0x99FFFFFF),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: 
-                // BackdropFilter(
-                //   filter: ImageFilter.blur(
-                //     sigmaX: 5.0,
-                //     sigmaY: 5.0,
-                //   ),
-                //   child: 
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${model['title']}',
-                        style: const TextStyle(
+                child:
+                    // BackdropFilter(
+                    //   filter: ImageFilter.blur(
+                    //     sigmaX: 5.0,
+                    //     sigmaY: 5.0,
+                    //   ),
+                    //   child:
+                    Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${model['title']}',
+                      style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          size: 18,
+                          color: Colors.white,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '${model['createDate']}' != null
-                            ? dateStringToDate('${model['createDate']}')
-                            : '',
-                      ),
-                    ],
-                  ),
-                
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '${model['createDate']}' != null
+                              ? dateStringToDate('${model['createDate']}')
+                              : '',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
                 // ),
               ),
+            ),
+          ),
+          Positioned(
+            top: 15,
+            right: 15,
+            child: Icon(
+              Icons.bookmark,
+              size: 25,
+              color: Colors.white,
             ),
           )
         ],
@@ -397,10 +371,10 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
             return ListView.separated(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
+              // padding: const EdgeInsets.symmetric(
+              //   horizontal: 15,
+              //   vertical: 10,
+              // ),
               itemCount: snapshot.data.length,
               separatorBuilder: (_, __) => const SizedBox(height: 15),
               itemBuilder: (_, __) =>
@@ -432,14 +406,21 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
           ),
         );
       },
-      child: SizedBox(
+      child: Container(
         height: 100,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: Colors.black.withOpacity(0.20),
+            ),
+            borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(8),
               child: loadingImageNetwork(model['imageUrl'],
-                  height: 100, width: 100, fit: BoxFit.cover),
+                  height: 100, width: 90, fit: BoxFit.cover),
             ),
             const SizedBox(width: 15),
             Expanded(
@@ -458,16 +439,29 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
-                      '${model['createDate']}' != null
-                          ? 'วันที่ ' +
-                              dateStringToDate('${model['createDate']}')
-                          : '',
-                      style: const TextStyle(
-                        fontSize: 8,
-                        fontFamily: 'Kanit',
-                        fontWeight: FontWeight.w300,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          size: 14,
+                          color: Color(0xFF808080),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '${model['createDate']}' != null
+                              ? 'วันที่ ' +
+                                  dateStringToDate('${model['createDate']}')
+                              : '',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Kanit',
+                            fontWeight: FontWeight.w300,
+                            color: Color(0xFF808080),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -479,20 +473,24 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
     );
   }
 
-  InputDecoration _decorationSearch(context, {String hintText = ''}) =>
+  InputDecoration _decorationSearch(context,
+          {String hintText = '',
+          bool filter = false,
+          VoidCallback? onTapFilter}) =>
       InputDecoration(
         // label: Text(hintText),
         // labelStyle: const TextStyle(
         //   color: Color(0xFF707070),
         //   fontSize: 12,
         // ),
+        isDense: true,
         hintText: hintText,
         hintStyle: const TextStyle(
           color: Color(0xFF707070),
           fontSize: 12,
         ),
         filled: true,
-        fillColor: Colors.transparent,
+        fillColor: Color(0xFFF2FAFF),
         prefixIcon: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -504,10 +502,12 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
             _onLoading();
           },
           child: Container(
-            padding: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(8),
             child: Image.asset(
               'assets/images/search.png',
               color: const Color(0x802D9CED),
+              height: 20,
+              width: 20,
             ),
           ),
         ),
@@ -523,20 +523,19 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
             });
           },
           child: Container(
-            padding: const EdgeInsets.all(3),
-            child: _searchController.text == ''
-                ? const Icon(
-                    Icons.arrow_back,
-                    color: Color(0xFF2D9CED),
-                    size: 16,
-                  )
-                : Image.asset(
-                    'assets/images/close_noti_list.png',
-                    color: const Color(0x802D9CED),
-                  ),
-          ),
+              padding: const EdgeInsets.all(0),
+              child: filter
+                  ? GestureDetector(
+                      onTap: onTapFilter,
+                      child: const Icon(
+                        Icons.tune,
+                        color: Color(0xFF2D9CED),
+                        size: 20,
+                      ),
+                    )
+                  : SizedBox()),
         ),
-        contentPadding: const EdgeInsets.fromLTRB(6.0, 1.0, 1.0, 1.0),
+        contentPadding: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 1.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: const BorderSide(color: Colors.transparent),
@@ -554,6 +553,124 @@ class _NewsListState extends State<NewsList> with TickerProviderStateMixin {
           fontSize: 10.0,
         ),
       );
+
+  showFilterModal() {
+    return showCupertinoModalBottomSheet(
+        context: context,
+        barrierColor: Color(0xFF04446C).withOpacity(0.5),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        shadow: BoxShadow(
+          blurRadius: 6,
+          offset: Offset(0.75, 0),
+          blurStyle: BlurStyle.normal,
+          color: Colors.grey.withOpacity(0.4),
+        ),
+        builder: (context) {
+          return Material(
+            type: MaterialType.transparency,
+            child: new Container(
+              height: 250,
+              width: double.infinity,
+              margin: EdgeInsets.only(top: 2),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(29),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 6,
+                      offset: Offset(0.75, 0),
+                      color: Colors.grey.withOpacity(0.4),
+                    )
+                  ]),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            'เรียงลำดับจาก',
+                            style: TextStyle(
+                                fontSize: 20, color: Color(0xFF011895)),
+                          ),
+                        ),
+                        SizedBox(height: 37),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "ใหม่สุด",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Radio(
+                                  value: "new",
+                                  groupValue: sortNews,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      sortNews = value!;
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              color: Color(0xFFD9D9D9),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "เก่าสุด",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Radio(
+                                  value: "old",
+                                  groupValue: sortNews,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      sortNews = value!;
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 15,
+                    right: 15,
+                    child: InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF2D9CED),
+                        ),
+                        child: Icon(
+                          Icons.clear,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   void initState() {

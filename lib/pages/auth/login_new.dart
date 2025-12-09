@@ -17,6 +17,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lc/v3/menu_v3.dart';
+import 'package:lc/v4/home_v4.dart';
+import 'package:lc/v4/menu_v4.dart';
 
 DateTime now = DateTime.now();
 // void main() {
@@ -598,7 +600,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MenuV3(),
+            builder: (context) => MenuV4(),
           ),
         );
       } else {
@@ -671,7 +673,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => MenuV3(),
+          builder: (context) => MenuV4(),
         ),
         (Route<dynamic> route) => false,
       );
@@ -789,7 +791,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MenuV3(),
+                  builder: (context) => MenuV4(),
                 ),
               );
             }
@@ -844,7 +846,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MenuV3(),
+            builder: (context) => MenuV4(),
           ),
         );
       }
@@ -927,7 +929,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MenuV3(),
+            builder: (context) => MenuV4(),
           ),
         );
       }
@@ -957,7 +959,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MenuV3(),
+          builder: (context) => MenuV4(),
         ),
       );
     }

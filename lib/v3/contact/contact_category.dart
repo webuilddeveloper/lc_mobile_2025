@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lc/component/loading_tween.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/v3/contact/contact.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 
 class ContactCategoryPage extends StatefulWidget {
   const ContactCategoryPage({Key? key, this.title = ''}) : super(key: key);
@@ -23,52 +24,14 @@ class _ContactCategoryPageState extends State<ContactCategoryPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            width: double.infinity,
-            color: Colors.white,
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(width: 40),
-              ],
-            ),
-          ),
-        ),
+        appBar: headerV4(
+            context,
+            () => {
+                  Navigator.pop(context, false),
+                },
+            title: 'เบอร์ติดต่อ'),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
           child: Column(
             children: [
               const SizedBox(height: 10),
@@ -109,15 +72,22 @@ class _ContactCategoryPageState extends State<ContactCategoryPage> {
                         ),
                       ),
                     ),
-                    child: Text(
-                      'ดูทั้งหมด',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF2D9CED),
-                        decoration: TextDecoration.underline,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF8AD2FF).withOpacity(0.25),
+                        borderRadius: BorderRadius.circular(13),
                       ),
-                      textAlign: TextAlign.center,
+                      child: Text(
+                        'ทั้งหมด',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF2D9CED),
+                          // decoration: TextDecoration.underline,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],

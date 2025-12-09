@@ -2,6 +2,7 @@ import 'package:lc/component/header.dart';
 import 'package:lc/pages/event_calendar/calendar.dart';
 import 'package:lc/pages/event_calendar/event_calendar_list.dart';
 import 'package:flutter/material.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:lc/widget/header.dart';
 
 class EventCalendarMain extends StatefulWidget {
@@ -50,14 +51,16 @@ class _EventCalendarMain extends State<EventCalendarMain> {
         //   title: widget.title,
         //   rightButton: () => changeTab(),
         // ),
-        appBar: header(
+        appBar: headerV4Calendar(
           context,
           () => {Navigator.pop(context)},
           // goBack,
           isShowLogo: false,
           isCenter: true,
-          isShowButtonCalendar: true,
-          isButtonCalendar: showCalendar,
+          isShowButtonCalendar: false,
+          isButtonBack: false,
+          isButtonCalendar: false,
+          isShowButtonPoi: false,
           title: widget.title,
           callBackClickButtonCalendar: () => setState(
             () {
@@ -71,9 +74,10 @@ class _EventCalendarMain extends State<EventCalendarMain> {
             overScroll.disallowIndicator();
             return false;
           },
-          child: showCalendar
-              ? CalendarPage()
-              : EventCalendarList(title: widget.title),
+          child: CalendarPage()
+          // showCalendar
+          //     ? CalendarPage()
+          //     : EventCalendarList(title: widget.title),
         ),
       ),
     );

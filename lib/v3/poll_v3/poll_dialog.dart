@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lc/v3/menu_v3.dart';
+import 'package:lc/v4/menu_v4.dart';
 
 class PollDialogV3 extends StatefulWidget {
   PollDialogV3({
@@ -115,7 +116,7 @@ class _PollDialogV3State extends State<PollDialogV3> {
 
   void goBack() async {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => MenuV3()),
+      MaterialPageRoute(builder: (context) => MenuV4()),
       (Route<dynamic> route) => false,
     );
     Navigator.pop(context);

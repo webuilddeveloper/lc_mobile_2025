@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:lc/menu_v2.dart';
 import 'package:lc/pages/auth/login_new.dart';
+import 'package:lc/v4/menu_v4.dart';
 // import 'package:lc/menu.dart';
 import 'pages/blank_page/dialog_fail.dart';
 import 'shared/api_provider.dart';
@@ -93,7 +94,7 @@ class _SplashPageState extends State<SplashPage> {
     if (value != null && value != '') {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => MenuV3(),
+          builder: (context) => MenuV4(),
         ),
         (Route<dynamic> route) => false,
       );

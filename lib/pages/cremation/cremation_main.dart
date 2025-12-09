@@ -7,6 +7,8 @@ import 'package:lc/pages/cremation/cremation_history.dart';
 import 'package:lc/pages/cremation/cremation_information.dart';
 import 'package:lc/pages/cremation/cremation_notification.dart';
 import 'package:lc/pages/cremation/cremation_register_first.dart';
+import 'package:lc/v4/menu_v4.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../component/material/custom_alert_dialog.dart';
@@ -58,65 +60,29 @@ class _CremationMainFormState extends State<CremationMainForm> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xFFFFFFFF),
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFFFFFFFF),
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MenuV3(),
-                    ),
-                  ),
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
+        appBar: headerV4Cremation(
+            context,
+            () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MenuV4(),
                   ),
                 ),
-                const Expanded(
-                  child: Text(
-                    "ข้อมูลสมาชิกฌาปนกิจ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
+            title: 'ข้อมูลสมาชิกณาปนกิจ',
+            actions: [
+              GestureDetector(
+                onTap: () => _dialogContact(),
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0x408AD2FF),
+                    borderRadius: BorderRadius.circular(50),
                   ),
+                  child: Image.asset('assets/images/icon_contact.png'),
                 ),
-                GestureDetector(
-                  onTap: () => _dialogContact(),
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Image.asset('assets/images/icon_contact.png'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            ]),
         extendBody: true,
         body: GestureDetector(
           onTap: () {

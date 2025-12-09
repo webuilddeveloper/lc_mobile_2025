@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lc/pages/blank_page/dialog_fail.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:lc/v3/widget/header_v3.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 
 class SettingNotificationPage extends StatefulWidget {
   @override
@@ -516,7 +517,7 @@ class _SettingNotificationPageState extends State<SettingNotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: headerV3(
+        appBar: headerV4(
           context,
           goBack,
           title: 'ตั้งค่าการแจ้งเตือน',
@@ -536,6 +537,7 @@ class _SettingNotificationPageState extends State<SettingNotificationPage> {
             else
               return Container(
                 child: ListView(
+                  padding: EdgeInsets.only(top: 16),
                   controller: scrollController,
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),

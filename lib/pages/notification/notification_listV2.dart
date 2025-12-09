@@ -13,6 +13,7 @@ import 'package:lc/pages/privilege/privilege_form.dart';
 import 'package:lc/shared/api_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lc/shared/extension.dart';
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:lc/widget/header_v2.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -374,7 +375,7 @@ class _NotificationListV2 extends State<NotificationListV2>
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: headerV2Notification(
+        appBar: headerV4Notification(
           context,
           () => goBack(),
           title: widget.title,

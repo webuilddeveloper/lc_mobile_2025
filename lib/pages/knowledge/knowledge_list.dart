@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:lc/pages/knowledge/knowledge_form.dart';
 import 'package:lc/shared/api_provider.dart' as service;
+import 'package:lc/v4/widget/header_v4.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class KnowledgeList extends StatefulWidget {
@@ -37,68 +38,32 @@ class _KnowledgeList extends State<KnowledgeList>
       // },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          flexibleSpace: Container(
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: const Color(0x408AD2FF),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Color(0xFF2D9CED),
-                    ),
+        appBar: headerV4(context, () {
+          Navigator.pop(context);
+        }, title: widget.title),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(16,20,16,0),
+          child: Column(
+            children: [
+              _buildCategory(),
+              const SizedBox(height: 10),
+              Expanded(
+                child: SmartRefresher(
+                  enablePullDown: false,
+                  enablePullUp: true,
+                  footer: const ClassicFooter(
+                    loadingText: ' ',
+                    canLoadingText: ' ',
+                    idleText: ' ',
+                    idleIcon: Icon(Icons.arrow_upward, color: Colors.transparent),
                   ),
+                  controller: _refreshController,
+                  onLoading: _onLoading,
+                  child: _buildKnowledge(),
                 ),
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 30),
-              ],
-            ),
-          ),
-        ),
-        body: Column(
-          children: [
-            _buildCategory(),
-            const SizedBox(height: 10),
-            Expanded(
-              child: SmartRefresher(
-                enablePullDown: false,
-                enablePullUp: true,
-                footer: const ClassicFooter(
-                  loadingText: ' ',
-                  canLoadingText: ' ',
-                  idleText: ' ',
-                  idleIcon: Icon(Icons.arrow_upward, color: Colors.transparent),
-                ),
-                controller: _refreshController,
-                onLoading: _onLoading,
-                child: _buildKnowledge(),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -113,7 +78,7 @@ class _KnowledgeList extends State<KnowledgeList>
         builder: (_, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
-              padding: const EdgeInsets.only(right: 15, left: 15),
+              // padding: const EdgeInsets.only(right: 15, left: 15),
               physics: const ClampingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               // ignore: no_wildcard_variable_uses
@@ -169,54 +134,51 @@ class _KnowledgeList extends State<KnowledgeList>
             return Column(
               children: [
                 GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: AnimatedContainer(
-                      height: 25,
-                      duration: _animationSearchController.duration ??
-                          const Duration(milliseconds: 500),
-                      curve: Curves.easeIn,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: const Color(0x408AD2FF),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: _showSearch
-                          ? TextFormField(
-                              controller: _searchController,
-                              keyboardType: TextInputType.text,
-                              onEditingComplete: () {
-                                FocusScope.of(context).unfocus();
-                                setState(() {
-                                  // _showSearch = false;
-                                  _limit = 0;
-                                });
-                                _onLoading();
-                              },
-                              style: const TextStyle(
-                                color: Color(0xFF2D9CED),
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Kanit',
-                                fontSize: 15.0,
-                              ),
-                              decoration: _decorationSearch(
-                                context,
-                                hintText: 'ค้นหา',
-                              ),
-                              validator: (model) {
-                                if (model!.isEmpty) {
-                                  return 'กรุณากรอกวันเดือนปีเกิด.';
-                                }
-                                return null;
-                              },
-                            )
-                          : Image.asset(
-                              'assets/images/search.png',
-                              color: const Color(0x802D9CED),
-                              height: 15,
-                              width: 15,
-                            ),
+                  child: AnimatedContainer(
+                    height: 25,
+                    duration: _animationSearchController.duration ??
+                        const Duration(milliseconds: 500),
+                    curve: Curves.easeIn,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0x408AD2FF),
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    child: _showSearch
+                        ? TextFormField(
+                            controller: _searchController,
+                            keyboardType: TextInputType.text,
+                            onEditingComplete: () {
+                              FocusScope.of(context).unfocus();
+                              setState(() {
+                                // _showSearch = false;
+                                _limit = 0;
+                              });
+                              _onLoading();
+                            },
+                            style: const TextStyle(
+                              color: Color(0xFF2D9CED),
+                              fontWeight: FontWeight.normal,
+                              fontFamily: 'Kanit',
+                              fontSize: 15.0,
+                            ),
+                            decoration: _decorationSearch(
+                              context,
+                              hintText: 'ค้นหา',
+                            ),
+                            validator: (model) {
+                              if (model!.isEmpty) {
+                                return 'กรุณากรอกวันเดือนปีเกิด.';
+                              }
+                              return null;
+                            },
+                          )
+                        : Image.asset(
+                            'assets/images/search.png',
+                            color: const Color(0x802D9CED),
+                            height: 15,
+                            width: 15,
+                          ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -229,10 +191,10 @@ class _KnowledgeList extends State<KnowledgeList>
             );
           } else {
             return MasonryGridView.count(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
+              // padding: const EdgeInsets.symmetric(
+              //   horizontal: 15,
+              //   vertical: 10,
+              // ),
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               scrollDirection: Axis.vertical,
