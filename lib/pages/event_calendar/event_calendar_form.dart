@@ -170,25 +170,27 @@ class _EventCalendarFormPageState extends State<EventCalendarFormPage> {
                               children: [
                                 Text(
                                   // ignore: unnecessary_null_comparison
-                                  '${model['createDate']}' != null
+                                  '${model['dateStart']}' != null
                                       // ignore: prefer_interpolation_to_compose_strings
-                                      ? '${'วันที่ ' + dateStringToDate('${model['createDate']}')} | เข้าชม ${model['view']} ครั้ง'
+                                      ? '${'วันที่ ' + dateStringToDate('${model['dateStart']}')} - ${dateStringToDate('${model['dateEnd']}')}'
                                       : '',
                                   style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                Text(
-                                  // ignore: unnecessary_null_comparison
-                                  '${model['createBy']}' != null
-                                      ? 'โดย ${model['createBy']}'
-                                      : '',
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
+                                // Text(
+                                //   // ignore: unnecessary_null_comparison
+                                //   '${model['createBy']}' != null
+                                //       ? 'โดย ${model['createBy']}'
+                                //       : '',
+                                //   style: const TextStyle(
+                                //     fontSize: 11,
+                                //     fontWeight: FontWeight.w400,
+                                //   ),
+                                // ),
+
+                                // Text('${model}')
                               ],
                             ),
                           ),
@@ -222,32 +224,33 @@ class _EventCalendarFormPageState extends State<EventCalendarFormPage> {
                         ],
                       ),
                       const SizedBox(height: 11),
-                      Html(
-                        data: model['description'],
-                        style: {
-                          'body': Style(
-                            color: const Color(0xFF000000),
-                          ),
-                        },
-                        onLinkTap: (String? url, Map<String, String> attributes,
-                            element) {
-                          launch(url!);
-                          //open URL in webview, or launch URL in browser, or any other logic here
-                        },
-                      ),
+                      // Html(
+                      //   data: model['description'],
+                      //   style: {
+                      //     'body': Style(
+                      //       color: const Color(0xFF000000),
+                      //     ),
+                      //   },
+                      //   onLinkTap: (String? url, Map<String, String> attributes,
+                      //       element) {
+                      //     launch(url!);
+                      //     //open URL in webview, or launch URL in browser, or any other logic here
+                      //   },
+                      // ),
                       const SizedBox(height: 5),
                       const SizedBox(height: 35),
-                      model['linkUrl'] != '' ? linkButton(model) : Container(),
+                      (model['linkUrl'] ?? '') != '' ? linkButton(model) : Container(),
                       Container(
                         height: 10,
                       ),
-                      model['fileUrl'] != '' ? fileUrl(model) : Container(),
+                      (model['fileUrl'] ?? '') != '' ? fileUrl(model) : Container(),
                       const SizedBox(height: 10),
                       _buildRotation(),
                       comment!,
                     ],
                   ),
                 ),
+              
               ],
             ),
           ),
